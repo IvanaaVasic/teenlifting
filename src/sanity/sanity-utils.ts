@@ -1,0 +1,545 @@
+import { createClient, groq } from "next-sanity";
+import config from "./config/client-config";
+import type { PortableTextBlock } from "next-sanity";
+
+const client = createClient(config);
+
+// ============================================
+// FRAGMENTS (Reusable query parts)
+// ============================================
+
+const imageFragment = /* groq */ `
+    asset->{
+        _id,
+        url,
+        metadata { lqip, dimensions }
+    }
+`;
+
+const ctaFragment = /* groq */ `
+    cta {
+        label,
+        href
+    }
+`;
+
+const heroFragment = /* groq */ `
+    hero {
+        slides[] {
+            _key,
+            image { ${imageFragment} },
+            title,
+            subtitle,
+            cta { label, href },
+            overlay
+        }
+    }
+`;
+
+const contentSectionFragment = /* groq */ `
+    sections[] {
+        _key,
+        title,
+        text,
+        image { ${imageFragment} },
+        ${ctaFragment}
+    }
+`;
+
+// ============================================
+// TYPES
+// ============================================
+
+export type Image = {
+    _key?: string;
+    asset: {
+        _id: string;
+        url: string;
+        metadata?: {
+            lqip?: string;
+            dimensions?: { width: number; height: number };
+        };
+    };
+};
+
+export type CTA = {
+    label: string;
+    href: string;
+};
+
+export type HeroSlide = {
+    _key: string;
+    image: Image;
+    title: string;
+    subtitle: string;
+    cta: CTA;
+    overlay: boolean;
+};
+
+export type Hero = {
+    slides: HeroSlide[];
+};
+
+export type ContentSection = {
+    _key: string;
+    title: string;
+    text: PortableTextBlock[];
+    image: Image;
+    cta: CTA;
+};
+
+export type Card = {
+    _key: string;
+    title: string;
+    text: string;
+    image: Image;
+    link: string;
+};
+
+export type Testimonial = {
+    _key: string;
+    name: string;
+    role?: string;
+    text: string;
+    image?: Image;
+};
+
+export type TestimonialsSection = {
+    title?: string;
+    intro?: string;
+    testimonials: Testimonial[];
+};
+
+export type NavItem = {
+    _key: string;
+    label: string;
+    href: string;
+    children?: { _key: string; label: string; href: string }[];
+};
+
+export type SanityColor = {
+    hex: string;
+    alpha?: number;
+    hsl?: { h: number; s: number; l: number; a: number };
+    hsv?: { h: number; s: number; v: number; a: number };
+    rgb?: { r: number; g: number; b: number; a: number };
+};
+
+export type Announcement = {
+    enabled: boolean;
+    text: PortableTextBlock[];
+    mobileText?: PortableTextBlock[];
+    animated: boolean;
+    animationSpeed: number;
+    backgroundColor?: SanityColor;
+    textColor?: SanityColor;
+};
+
+export type SiteSEO = {
+    metaTitle: string;
+    metaDescription: string;
+    ogImage?: Image;
+    keywords?: string[];
+    siteUrl?: string;
+    googleVerification?: string;
+};
+
+export type SiteSettings = {
+    siteTitle: string;
+    logo: Image;
+    seo?: SiteSEO;
+    announcement: Announcement;
+    mainNav: NavItem[];
+    footer: {
+        address: string;
+        phone: string;
+        email: string;
+    };
+    socials: { _key: string; label: string; url: string }[];
+};
+
+export type HomePage = {
+    hero: Hero;
+    promo: {
+        text: string;
+        link: string;
+        active: boolean;
+    };
+    cardsSection: {
+        title: string;
+        intro: string;
+        cards: Card[];
+    };
+    featuredPosts: BlogPost[];
+    testimonialsSection?: TestimonialsSection;
+};
+
+export type AboutPage = {
+    hero: Hero;
+    sections: ContentSection[];
+};
+
+export type ContactPage = {
+    hero: Hero;
+    text: PortableTextBlock[];
+};
+
+export type PricePage = {
+    hero: Hero;
+    categories: {
+        _key: string;
+        title: string;
+        items: {
+            _key: string;
+            name: string;
+            description: string;
+            price: string;
+        }[];
+    }[];
+};
+
+export type PromotionPage = {
+    _id: string;
+    title: string;
+    slug: string;
+    hero: Hero;
+    content: PortableTextBlock[];
+};
+
+export type TreatmentPage = {
+    _id: string;
+    title: string;
+    slug: string;
+    category: "face" | "body" | "pelvic";
+    hero: Hero;
+    sections: ContentSection[];
+};
+
+export type GalleryImage = Image & {
+    alt?: string;
+    caption?: string;
+};
+
+export type BlogPost = {
+    _id: string;
+    title: string;
+    slug: string;
+    excerpt: string;
+    mainImage: Image;
+    gallery?: GalleryImage[];
+    content: PortableTextBlock[];
+    publishedAt: string;
+    seo?: {
+        metaTitle: string;
+        metaDescription: string;
+    };
+};
+
+// ============================================
+// QUERIES
+// ============================================
+
+// Site Settings (for header/footer/nav)
+export async function getSiteSettings(): Promise<SiteSettings> {
+    return client.fetch(
+        groq`*[_type == "siteSettings"][0] {
+            siteTitle,
+            logo { ${imageFragment} },
+            seo {
+                metaTitle,
+                metaDescription,
+                ogImage { ${imageFragment} },
+                keywords,
+                siteUrl,
+                googleVerification
+            },
+            announcement {
+                enabled,
+                text,
+                mobileText,
+                animated,
+                animationSpeed,
+                backgroundColor,
+                textColor
+            },
+            mainNav[] {
+                _key,
+                label,
+                href,
+                children[] {
+                    _key,
+                    label,
+                    href
+                }
+            },
+            footer {
+                address,
+                phone,
+                email
+            },
+            socials[] {
+                _key,
+                label,
+                url
+            }
+        }`
+    );
+}
+
+// Home Page
+export async function getHomePage(): Promise<HomePage> {
+    return client.fetch(
+        groq`*[_type == "homePage"][0] {
+            ${heroFragment},
+            promo {
+                text,
+                link,
+                active
+            },
+            cardsSection {
+                title,
+                intro,
+                cards[] {
+                    _key,
+                    title,
+                    text,
+                    image { ${imageFragment} },
+                    link
+                }
+            },
+            "featuredPosts": featuredPosts[]-> {
+                _id,
+                title,
+                "slug": slug.current,
+                excerpt,
+                mainImage { ${imageFragment} },
+                gallery[] {
+                    ${imageFragment},
+                    alt,
+                    caption
+                },
+                publishedAt
+            },
+            testimonialsSection {
+                title,
+                intro,
+                testimonials[] {
+                    _key,
+                    name,
+                    role,
+                    text,
+                    image { ${imageFragment} }
+                }
+            }
+        }`
+    );
+}
+
+// About Page
+export async function getAboutPage(): Promise<AboutPage> {
+    return client.fetch(
+        groq`*[_type == "aboutPage"][0] {
+            ${heroFragment},
+            ${contentSectionFragment}
+        }`
+    );
+}
+
+// Contact Page
+export async function getContactPage(): Promise<ContactPage> {
+    return client.fetch(
+        groq`*[_type == "contactPage"][0] {
+            ${heroFragment},
+            text
+        }`
+    );
+}
+
+// Price Page
+export async function getPricePage(): Promise<PricePage> {
+    return client.fetch(
+        groq`*[_type == "pricePage"][0] {
+            ${heroFragment},
+            categories[] {
+                _key,
+                title,
+                items[] {
+                    _key,
+                    name,
+                    description,
+                    price
+                }
+            }
+        }`
+    );
+}
+
+// Promotion Page (single)
+export async function getPromotionPage(slug: string): Promise<PromotionPage> {
+    return client.fetch(
+        groq`*[_type == "promotionPage" && slug.current == $slug][0] {
+            _id,
+            title,
+            "slug": slug.current,
+            ${heroFragment},
+            content
+        }`,
+        { slug }
+    );
+}
+
+// All Promotions (for listing)
+export async function getAllPromotions(): Promise<PromotionPage[]> {
+    return client.fetch(
+        groq`*[_type == "promotionPage"] | order(_createdAt desc) {
+            _id,
+            title,
+            "slug": slug.current,
+            ${heroFragment}
+        }`
+    );
+}
+
+// Treatment Page (single by slug)
+export async function getTreatmentPage(slug: string): Promise<TreatmentPage> {
+    return client.fetch(
+        groq`*[_type == "treatmentPage" && slug.current == $slug][0] {
+            _id,
+            title,
+            "slug": slug.current,
+            category,
+            ${heroFragment},
+            ${contentSectionFragment}
+        }`,
+        { slug }
+    );
+}
+
+// Treatments by category
+export async function getTreatmentsByCategory(
+    category: "face" | "body" | "pelvic"
+): Promise<TreatmentPage[]> {
+    return client.fetch(
+        groq`*[_type == "treatmentPage" && category == $category] | order(title asc) {
+            _id,
+            title,
+            "slug": slug.current,
+            category,
+            ${heroFragment}
+        }`,
+        { category }
+    );
+}
+
+// All Treatments (for sitemap/navigation)
+export async function getAllTreatments(): Promise<TreatmentPage[]> {
+    return client.fetch(
+        groq`*[_type == "treatmentPage"] | order(category asc, title asc) {
+            _id,
+            title,
+            "slug": slug.current,
+            category,
+            ${heroFragment}
+        }`
+    );
+}
+
+// Blog Post (single by slug)
+export async function getBlogPost(slug: string): Promise<BlogPost> {
+    return client.fetch(
+        groq`*[_type == "post" && slug.current == $slug][0] {
+            _id,
+            title,
+            "slug": slug.current,
+            excerpt,
+            mainImage { ${imageFragment} },
+            gallery[] {
+                ${imageFragment},
+                alt,
+                caption
+            },
+            content[] {
+                ...,
+                _type == "image" => {
+                    ${imageFragment},
+                    alt,
+                    caption
+                }
+            },
+            publishedAt,
+            seo {
+                metaTitle,
+                metaDescription
+            }
+        }`,
+        { slug }
+    );
+}
+
+// All Blog Posts (for listing)
+export async function getAllBlogPosts(): Promise<BlogPost[]> {
+    return client.fetch(
+        groq`*[_type == "post"] | order(publishedAt desc) {
+            _id,
+            title,
+            "slug": slug.current,
+            excerpt,
+            mainImage { ${imageFragment} },
+            gallery[] {
+                ${imageFragment},
+                alt,
+                caption
+            },
+            publishedAt
+        }`
+    );
+}
+
+// Recent Blog Posts (for homepage or sidebar)
+export async function getRecentBlogPosts(
+    limit: number = 3
+): Promise<BlogPost[]> {
+    return client.fetch(
+        groq`*[_type == "post"] | order(publishedAt desc)[0...$limit] {
+            _id,
+            title,
+            "slug": slug.current,
+            excerpt,
+            mainImage { ${imageFragment} },
+            gallery[] {
+                ${imageFragment},
+                alt,
+                caption
+            },
+            publishedAt
+        }`,
+        { limit: limit - 1 }
+    );
+}
+
+// Blog Posts Slugs (for static generation)
+export async function getBlogPostsSlugs(): Promise<{ slug: string }[]> {
+    return client.fetch(
+        groq`*[_type == "post" && defined(slug.current)] {
+            "slug": slug.current
+        }`
+    );
+}
+
+// Treatment Slugs (for static generation)
+export async function getTreatmentSlugs(): Promise<{ slug: string }[]> {
+    return client.fetch(
+        groq`*[_type == "treatmentPage" && defined(slug.current)] {
+            "slug": slug.current
+        }`
+    );
+}
+
+// Promotion Slugs (for static generation)
+export async function getPromotionSlugs(): Promise<{ slug: string }[]> {
+    return client.fetch(
+        groq`*[_type == "promotionPage" && defined(slug.current)] {
+            "slug": slug.current
+        }`
+    );
+}

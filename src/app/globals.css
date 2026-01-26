@@ -1,26 +1,64 @@
 @import "tailwindcss";
 
+/* ============================================
+   Theme Variables
+   ============================================ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+    /* Colors */
+    --color-primary: #00b4a5;
+    --color-primary-hover: #009d90;
+    --color-secondary: #4c81c1;
+    --color-secondary-hover: #3d6fa8;
+    --color-text: #404041;
+    --color-text-light: #6b6b6c;
+    --color-text-dark: #1a1a1a;
+    --color-background: #ffffff;
+    --color-background-alt: #f9fafb;
+    --color-border: #e5e7eb;
+
+    /* Typography */
+    --font-family: var(--font-titillium), "Titillium Web", sans-serif;
+
+    /* Spacing */
+    --container-max-width: 1920px;
+    --header-height: 72px;
+    --header-height-mobile: 64px;
+
+    /* Transitions */
+    --transition-fast: 0.15s ease;
+    --transition-normal: 0.2s ease;
+    --transition-slow: 0.3s ease;
+
+    /* Border radius */
+    --radius-sm: 4px;
+    --radius-md: 6px;
+    --radius-lg: 8px;
+    --radius-xl: 12px;
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ============================================
+   Base Styles
+   ============================================ */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+    scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    background-color: var(--color-background);
+    color: var(--color-text);
+    font-family: var(--font-family);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }

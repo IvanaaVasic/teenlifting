@@ -1,0 +1,63 @@
+.section {
+    width: 100%;
+    overflow: hidden;
+    font-size: 14px;
+    line-height: 1.25;
+}
+
+/* Marquee container */
+.marquee {
+    padding: 10px 0;
+}
+
+/* Static (non-animated) content */
+.staticContent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 16px;
+}
+
+/* Content inside marquee or static */
+.content {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    padding: 0 48px;
+}
+
+.content p {
+    margin: 0;
+    display: inline;
+}
+
+.content a {
+    color: var(--announcement-text-color, inherit);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: opacity 0.2s ease;
+}
+
+.content a:hover {
+    opacity: 0.8;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .section {
+        font-size: 13px;
+    }
+
+    .marquee {
+        padding: 8px 0;
+    }
+
+    .staticContent {
+        padding: 8px 12px;
+    }
+
+    .content {
+        padding: 0 24px;
+    }
+}
