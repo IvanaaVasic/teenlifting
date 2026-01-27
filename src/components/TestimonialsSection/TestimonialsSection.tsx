@@ -84,8 +84,8 @@ export function TestimonialsSection({ data }: TestimonialsSectionProps) {
                 {useSwiper ? (
                     <Swiper
                         modules={[Pagination, Autoplay]}
-                        slidesPerView={1}
-                        spaceBetween={16}
+                        slidesPerView={1.15}
+                        spaceBetween={12}
                         pagination={{
                             clickable: true,
                             bulletClass: styles.bullet,
@@ -97,12 +97,16 @@ export function TestimonialsSection({ data }: TestimonialsSectionProps) {
                             pauseOnMouseEnter: true,
                         }}
                         breakpoints={{
-                            480: {
-                                slidesPerView: 1.5,
+                            400: {
+                                slidesPerView: 1.3,
+                                spaceBetween: 14,
+                            },
+                            540: {
+                                slidesPerView: 1.8,
                                 spaceBetween: 16,
                             },
-                            640: {
-                                slidesPerView: 2.2,
+                            768: {
+                                slidesPerView: 2.3,
                                 spaceBetween: 20,
                             },
                             1024: {
