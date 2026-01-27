@@ -40,9 +40,35 @@ const contentSectionFragment = /* groq */ `
     sections[] {
         _key,
         title,
-        text,
-        image { ${imageFragment} },
-        ${ctaFragment}
+        content[] {
+            ...,
+            _type == "image" => {
+                _type,
+                _key,
+                alt,
+                caption,
+                layout,
+                asset-> {
+                    _id,
+                    url,
+                    metadata { lqip, dimensions }
+                }
+            },
+            _type == "imageGallery" => {
+                _type,
+                _key,
+                columns,
+                images[] {
+                    _key,
+                    alt,
+                    asset-> {
+                        _id,
+                        url,
+                        metadata { lqip, dimensions }
+                    }
+                }
+            }
+        }
     }
 `;
 
@@ -82,10 +108,9 @@ export type Hero = {
 
 export type ContentSection = {
     _key: string;
-    title: string;
-    text: PortableTextBlock[];
-    image: Image;
-    cta: CTA;
+    title?: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    content: any[];
 };
 
 export type Card = {
@@ -213,6 +238,12 @@ export type TreatmentPage = {
     category: "face" | "body" | "pelvic";
     hero: Hero;
     sections: ContentSection[];
+    contactCta?: {
+        title?: string;
+        text?: string;
+        buttonLabel?: string;
+        buttonHref?: string;
+    };
 };
 
 export type GalleryImage = Image & {
@@ -409,7 +440,13 @@ export async function getTreatmentPage(slug: string): Promise<TreatmentPage> {
             "slug": slug.current,
             category,
             ${heroFragment},
-            ${contentSectionFragment}
+            ${contentSectionFragment},
+            contactCta {
+                title,
+                text,
+                buttonLabel,
+                buttonHref
+            }
         }`,
         { slug }
     );

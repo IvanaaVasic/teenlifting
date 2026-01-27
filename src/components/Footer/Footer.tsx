@@ -95,7 +95,7 @@ export function Footer({ settings }: FooterProps) {
                     <div className={styles.column}>
                         <h3 className={styles.columnTitle}>Brzi linkovi</h3>
                         <nav className={styles.nav}>
-                            {mainNav?.slice(0, 6).map((item) => (
+                            {mainNav?.map((item) => (
                                 <Link
                                     key={item._key}
                                     href={item.href}
@@ -155,8 +155,8 @@ export function Footer({ settings }: FooterProps) {
                 {/* Bottom Bar */}
                 <div className={styles.bottom}>
                     <p className={styles.copyright}>
-                        &copy; {currentYear} {siteTitle || "Teenlifting"}. Sva
-                        prava zadržana.
+                        Copyright &copy; {currentYear}{" "}
+                        {siteTitle || "Teenlifting"}.
                     </p>
                 </div>
             </div>

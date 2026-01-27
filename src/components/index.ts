@@ -6,6 +6,10 @@ export { CardSection } from "./CardSection";
 export { BlogSection } from "./BlogSection";
 export { TestimonialsSection } from "./TestimonialsSection/TestimonialsSection";
 export {
+    PortableTextContent,
+    portableTextComponents,
+} from "./PortableTextContent";
+export {
     OrganizationJsonLd,
     WebPageJsonLd,
     BreadcrumbJsonLd,

@@ -76,11 +76,11 @@ export function CardSection({ title, intro, cards }: CardSectionProps) {
                             bulletClass: styles.bullet,
                             bulletActiveClass: styles.bulletActive,
                         }}
-                        autoplay={{
-                            delay: 4000,
-                            disableOnInteraction: false,
-                            pauseOnMouseEnter: true,
-                        }}
+                        // autoplay={{
+                        //     delay: 4000,
+                        //     disableOnInteraction: false,
+                        //     pauseOnMouseEnter: true,
+                        // }}
                         breakpoints={{
                             375: {
                                 slidesPerView: 1.2,
