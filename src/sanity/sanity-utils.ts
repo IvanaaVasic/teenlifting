@@ -238,6 +238,10 @@ export type TreatmentPage = {
     category: "face" | "body" | "pelvic";
     hero: Hero;
     sections: ContentSection[];
+    disclaimer?: {
+        text?: string;
+        show?: boolean;
+    };
     contactCta?: {
         title?: string;
         text?: string;
@@ -441,6 +445,10 @@ export async function getTreatmentPage(slug: string): Promise<TreatmentPage> {
             category,
             ${heroFragment},
             ${contentSectionFragment},
+            disclaimer {
+                text,
+                show
+            },
             contactCta {
                 title,
                 text,

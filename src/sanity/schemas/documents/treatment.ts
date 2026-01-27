@@ -27,6 +27,28 @@ const treatmentPage = {
         },
 
         {
+            name: "disclaimer",
+            title: "Disclaimer / Kontraindikacije",
+            type: "object",
+            description: "Info box sa upozorenjem ili kontraindikacijama",
+            fields: [
+                {
+                    name: "text",
+                    title: "Text",
+                    type: "text",
+                    rows: 2,
+                    description: "Npr: Kontraindikacije za TEENLIFTING su: Pace maker, Epilepsija, Trudnoća...",
+                },
+                {
+                    name: "show",
+                    title: "Prikaži disclaimer",
+                    type: "boolean",
+                    initialValue: true,
+                },
+            ],
+        },
+
+        {
             name: "contactCta",
             title: "Contact CTA",
             type: "object",

@@ -3,6 +3,7 @@ export const dynamic = "force-dynamic";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import Link from "next/link";
+import { HiOutlineInformationCircle } from "react-icons/hi";
 import { getTreatmentPage, getSiteSettings } from "@/sanity/sanity-utils";
 import { Hero, PortableTextContent } from "@/components";
 import styles from "./page.module.css";
@@ -63,6 +64,21 @@ export default async function TreatmentPage({ params }: Props) {
                         </div>
                     </section>
                 ))}
+
+                {/* Disclaimer */}
+                {treatment.disclaimer?.show && treatment.disclaimer?.text && (
+                    <div className={styles.disclaimerWrapper}>
+                        <div className={styles.disclaimer}>
+                            <HiOutlineInformationCircle
+                                className={styles.disclaimerIcon}
+                                size={24}
+                            />
+                            <p className={styles.disclaimerText}>
+                                {treatment.disclaimer.text}
+                            </p>
+                        </div>
+                    </div>
+                )}
 
                 {/* Contact CTA */}
                 <section className={styles.contactCta}>
