@@ -105,6 +105,57 @@ export const portableTextComponents: PortableTextComponents = {
                 </div>
             );
         },
+        dataTable: ({ value }) => {
+            if (!value?.rows?.length) return null;
+
+            return (
+                <div className={styles.tableWrapper}>
+                    {value.title && (
+                        <h4 className={styles.tableTitle}>{value.title}</h4>
+                    )}
+                    <table className={styles.table}>
+                        <tbody>
+                            {value.rows.map(
+                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                (row: any, rowIndex: number) => (
+                                    <tr
+                                        key={row._key || rowIndex}
+                                        className={
+                                            row.isHeader
+                                                ? styles.headerRow
+                                                : styles.dataRow
+                                        }
+                                    >
+                                        {row.cells?.map(
+                                            (cell: string, cellIndex: number) =>
+                                                row.isHeader ? (
+                                                    <th
+                                                        key={cellIndex}
+                                                        className={
+                                                            styles.headerCell
+                                                        }
+                                                    >
+                                                        {cell}
+                                                    </th>
+                                                ) : (
+                                                    <td
+                                                        key={cellIndex}
+                                                        className={
+                                                            styles.dataCell
+                                                        }
+                                                    >
+                                                        {cell}
+                                                    </td>
+                                                )
+                                        )}
+                                    </tr>
+                                )
+                            )}
+                        </tbody>
+                    </table>
+                </div>
+            );
+        },
     },
     block: {
         h2: ({ children }) => <h2 className={styles.heading2}>{children}</h2>,

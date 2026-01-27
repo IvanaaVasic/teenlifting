@@ -13,6 +13,17 @@ type HeaderProps = {
     settings: SiteSettings | null;
 };
 
+// Helper to normalize href - adds leading slash if missing and not external
+function normalizeHref(href: string | undefined): string {
+    if (!href) return "#";
+    // If it's an external URL or already starts with /, return as is
+    if (href.startsWith("http") || href.startsWith("/") || href.startsWith("#")) {
+        return href;
+    }
+    // Add leading slash for internal paths
+    return `/${href}`;
+}
+
 export function Header({ settings }: HeaderProps) {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [openDropdown, setOpenDropdown] = useState<string | null>(null);
@@ -99,7 +110,7 @@ export function Header({ settings }: HeaderProps) {
                                         >
                                             {item.href && (
                                                 <Link
-                                                    href={item.href}
+                                                    href={normalizeHref(item.href)}
                                                     className={
                                                         styles.dropdownLink
                                                     }
@@ -113,7 +124,7 @@ export function Header({ settings }: HeaderProps) {
                                             {item.children.map((child) => (
                                                 <Link
                                                     key={child._key}
-                                                    href={child.href}
+                                                    href={normalizeHref(child.href)}
                                                     className={
                                                         styles.dropdownLink
                                                     }
@@ -128,7 +139,7 @@ export function Header({ settings }: HeaderProps) {
                                     </div>
                                 ) : (
                                     <Link
-                                        href={item.href || "#"}
+                                        href={normalizeHref(item.href)}
                                         className={styles.navLink}
                                     >
                                         {item.label}
@@ -190,7 +201,7 @@ export function Header({ settings }: HeaderProps) {
                                     >
                                         {item.href && (
                                             <Link
-                                                href={item.href}
+                                                href={normalizeHref(item.href)}
                                                 className={
                                                     styles.mobileDropdownLink
                                                 }
@@ -202,7 +213,7 @@ export function Header({ settings }: HeaderProps) {
                                         {item.children.map((child) => (
                                             <Link
                                                 key={child._key}
-                                                href={child.href}
+                                                href={normalizeHref(child.href)}
                                                 className={
                                                     styles.mobileDropdownLink
                                                 }
@@ -215,7 +226,7 @@ export function Header({ settings }: HeaderProps) {
                                 </>
                             ) : (
                                 <Link
-                                    href={item.href || "#"}
+                                    href={normalizeHref(item.href)}
                                     className={styles.mobileNavLink}
                                     onClick={closeMobileMenu}
                                 >

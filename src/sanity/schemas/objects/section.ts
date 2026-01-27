@@ -120,6 +120,77 @@ const section = {
                         },
                     },
                 },
+                // Table
+                {
+                    type: "object",
+                    name: "dataTable",
+                    title: "Table",
+                    fields: [
+                        {
+                            name: "title",
+                            title: "Table title (optional)",
+                            type: "string",
+                        },
+                        {
+                            name: "rows",
+                            title: "Rows",
+                            type: "array",
+                            of: [
+                                {
+                                    type: "object",
+                                    name: "row",
+                                    fields: [
+                                        {
+                                            name: "cells",
+                                            title: "Cells",
+                                            type: "array",
+                                            of: [{ type: "string" }],
+                                        },
+                                        {
+                                            name: "isHeader",
+                                            title: "Header row?",
+                                            type: "boolean",
+                                            initialValue: false,
+                                        },
+                                    ],
+                                    preview: {
+                                        select: {
+                                            cells: "cells",
+                                            isHeader: "isHeader",
+                                        },
+                                        prepare({
+                                            cells,
+                                            isHeader,
+                                        }: {
+                                            cells: string[];
+                                            isHeader: boolean;
+                                        }) {
+                                            return {
+                                                title: cells?.slice(0, 3).join(" | ") || "Empty row",
+                                                subtitle: isHeader ? "Header" : "Data row",
+                                            };
+                                        },
+                                    },
+                                },
+                            ],
+                        },
+                    ],
+                    preview: {
+                        select: { title: "title", rows: "rows" },
+                        prepare({
+                            title,
+                            rows,
+                        }: {
+                            title: string;
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                            rows: any[];
+                        }) {
+                            return {
+                                title: title || `Table (${rows?.length || 0} rows)`,
+                            };
+                        },
+                    },
+                },
                 // Image gallery
                 {
                     type: "object",
