@@ -37,7 +37,8 @@ const treatmentPage = {
                     title: "Text",
                     type: "text",
                     rows: 2,
-                    description: "Npr: Kontraindikacije za TEENLIFTING su: Pace maker, Epilepsija, Trudnoća...",
+                    description:
+                        "Npr: Kontraindikacije za TEENLIFTING su: Pace maker, Epilepsija, Trudnoća...",
                 },
                 {
                     name: "show",
