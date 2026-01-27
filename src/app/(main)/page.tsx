@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { getHomePage } from "@/sanity/sanity-utils";
 import {
     Hero,
