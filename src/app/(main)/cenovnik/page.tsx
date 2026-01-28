@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 
 import { Metadata } from "next";
 import { getPricePage, getSiteSettings } from "@/sanity/sanity-utils";
-import { Hero, PortableTextContent } from "@/components";
+import { Hero, PortableTextContent, ContactCTA } from "@/components";
 import styles from "./page.module.css";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -42,6 +42,12 @@ export default async function PricePage() {
                         </div>
                     </section>
                 ))}
+
+                {/* Contact CTA */}
+                <ContactCTA
+                    data={pricePage?.contactCta}
+                    showDefault={false}
+                />
             </article>
         </div>
     );

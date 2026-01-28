@@ -12,6 +12,7 @@ import section from "./objects/section";
 import card from "./objects/card";
 import testimonial from "./objects/testemonials";
 import cta from "./objects/cta";
+import contactCta from "./objects/contactCta";
 import announcement from "./objects/announcement";
 
 const schemas = [
@@ -29,6 +30,7 @@ const schemas = [
     card,
     testimonial,
     cta,
+    contactCta,
     announcement,
 ];
 

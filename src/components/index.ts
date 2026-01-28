@@ -10,6 +10,8 @@ export {
     portableTextComponents,
 } from "./PortableTextContent";
 export { ContactForm } from "./ContactForm";
+export { ContactCTA } from "./ContactCTA";
+export type { ContactCTAData } from "./ContactCTA";
 export {
     OrganizationJsonLd,
     WebPageJsonLd,

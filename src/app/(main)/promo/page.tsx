@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 
 import { Metadata } from "next";
 import { getPromoPage, getSiteSettings } from "@/sanity/sanity-utils";
-import { Hero, PortableTextContent } from "@/components";
+import { Hero, PortableTextContent, ContactCTA } from "@/components";
 import styles from "./page.module.css";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -52,6 +52,12 @@ export default async function PromoPage() {
                         </div>
                     </section>
                 ))}
+
+                {/* Contact CTA */}
+                <ContactCTA
+                    data={promoPage?.contactCta}
+                    showDefault={false}
+                />
             </article>
         </div>
     );

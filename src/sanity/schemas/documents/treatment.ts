@@ -55,36 +55,8 @@ const treatmentPage = {
         {
             name: "contactCta",
             title: "Contact CTA",
-            type: "object",
+            type: "contactCta",
             description: "Sekcija za poziv na akciju na dnu stranice",
-            fields: [
-                {
-                    name: "title",
-                    title: "Heading",
-                    type: "string",
-                    initialValue: "Zainteresovani ste za ovaj tretman?",
-                },
-                {
-                    name: "text",
-                    title: "Text",
-                    type: "text",
-                    rows: 2,
-                    initialValue:
-                        "Zakažite konsultaciju i saznajte više o tome kako vam možemo pomoći.",
-                },
-                {
-                    name: "buttonLabel",
-                    title: "Button label",
-                    type: "string",
-                    initialValue: "Kontaktirajte nas",
-                },
-                {
-                    name: "buttonHref",
-                    title: "Button link",
-                    type: "string",
-                    initialValue: "kontakt",
-                },
-            ],
         },
     ],
 };

@@ -218,9 +218,17 @@ export type ContactPage = {
     mapTitle?: string;
 };
 
+export type ContactCTAType = {
+    title?: string;
+    text?: string;
+    buttonLabel?: string;
+    buttonHref?: string;
+};
+
 export type PricePage = {
     hero: Hero;
     sections: ContentSection[];
+    contactCta?: ContactCTAType;
 };
 
 export type BlogPage = {
@@ -230,6 +238,7 @@ export type BlogPage = {
 export type PromotionPage = {
     hero?: Hero;
     sections: ContentSection[];
+    contactCta?: ContactCTAType;
 };
 
 export type TreatmentPage = {
@@ -419,7 +428,13 @@ export async function getPricePage(): Promise<PricePage> {
     return client.fetch(
         groq`*[_type == "pricePage"][0] {
             ${heroFragment},
-            ${contentSectionFragment}
+            ${contentSectionFragment},
+            contactCta {
+                title,
+                text,
+                buttonLabel,
+                buttonHref
+            }
         }`
     );
 }
@@ -438,7 +453,13 @@ export async function getPromoPage(): Promise<PromotionPage | null> {
     return client.fetch(
         groq`*[_type == "promotionPage"][0] {
             ${heroFragment},
-            ${contentSectionFragment}
+            ${contentSectionFragment},
+            contactCta {
+                title,
+                text,
+                buttonLabel,
+                buttonHref
+            }
         }`
     );
 }

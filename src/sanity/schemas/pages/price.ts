@@ -21,6 +21,12 @@ const pricePage = {
             type: "array",
             of: [{ type: "contentSection" }],
         },
+        {
+            name: "contactCta",
+            title: "Contact CTA",
+            type: "contactCta",
+            description: "Sekcija za poziv na akciju na dnu stranice",
+        },
     ],
 };
 

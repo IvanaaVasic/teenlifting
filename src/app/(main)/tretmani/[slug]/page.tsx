@@ -2,10 +2,9 @@ export const dynamic = "force-dynamic";
 
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import Link from "next/link";
 import { HiOutlineInformationCircle } from "react-icons/hi";
 import { getTreatmentPage, getSiteSettings } from "@/sanity/sanity-utils";
-import { Hero, PortableTextContent } from "@/components";
+import { Hero, PortableTextContent, ContactCTA } from "@/components";
 import styles from "./page.module.css";
 
 type Props = {
@@ -83,27 +82,10 @@ export default async function TreatmentPage({ params }: Props) {
                 )}
 
                 {/* Contact CTA */}
-                <section className={styles.contactCta}>
-                    <div className={styles.contactContainer}>
-                        <h2 className={styles.contactTitle}>
-                            {treatment.contactCta?.title ||
-                                "Zainteresovani ste za ovaj tretman?"}
-                        </h2>
-                        <p className={styles.contactText}>
-                            {treatment.contactCta?.text ||
-                                "Zakažite konsultaciju i saznajte više o tome kako vam možemo pomoći."}
-                        </p>
-                        <Link
-                            href={
-                                treatment.contactCta?.buttonHref || "/kontakt"
-                            }
-                            className={styles.contactButton}
-                        >
-                            {treatment.contactCta?.buttonLabel ||
-                                "Kontaktirajte nas"}
-                        </Link>
-                    </div>
-                </section>
+                <ContactCTA
+                    data={treatment.contactCta}
+                    showDefault={false}
+                />
             </article>
         </div>
     );
