@@ -206,8 +206,15 @@ export type AboutPage = {
 };
 
 export type ContactPage = {
-    hero: Hero;
-    text: PortableTextBlock[];
+    hero?: Hero;
+    title?: string;
+    intro?: string;
+    formTitle?: string;
+    formDescription?: string;
+    recipientEmail?: string;
+    successMessage?: string;
+    googleMapsEmbed?: string;
+    mapTitle?: string;
 };
 
 export type PricePage = {
@@ -385,11 +392,18 @@ export async function getAboutPage(): Promise<AboutPage> {
 }
 
 // Contact Page
-export async function getContactPage(): Promise<ContactPage> {
+export async function getContactPage(): Promise<ContactPage | null> {
     return client.fetch(
         groq`*[_type == "contactPage"][0] {
             ${heroFragment},
-            text
+            title,
+            intro,
+            formTitle,
+            formDescription,
+            recipientEmail,
+            successMessage,
+            googleMapsEmbed,
+            mapTitle
         }`
     );
 }

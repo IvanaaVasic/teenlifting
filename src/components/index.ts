@@ -9,6 +9,7 @@ export {
     PortableTextContent,
     portableTextComponents,
 } from "./PortableTextContent";
+export { ContactForm } from "./ContactForm";
 export {
     OrganizationJsonLd,
     WebPageJsonLd,
