@@ -158,21 +158,41 @@ function ContactPageContent({
                                     </div>
                                 )}
 
-                                <div className={styles.infoCard}>
-                                    <div className={styles.infoIconWrapper}>
-                                        <HiOutlineClock size={24} />
-                                    </div>
-                                    <div className={styles.infoContent}>
-                                        <h3 className={styles.infoLabel}>
-                                            Radno vreme
-                                        </h3>
-                                        <p className={styles.infoValue}>
-                                            Pon - Pet: 09:00 - 20:00
-                                            <br />
-                                            Sub: 09:00 - 15:00
-                                        </p>
-                                    </div>
-                                </div>
+                                {settings?.footer?.workingHours &&
+                                    settings.footer.workingHours.length > 0 && (
+                                        <div className={styles.infoCard}>
+                                            <div
+                                                className={
+                                                    styles.infoIconWrapper
+                                                }
+                                            >
+                                                <HiOutlineClock size={24} />
+                                            </div>
+                                            <div className={styles.infoContent}>
+                                                <h3 className={styles.infoLabel}>
+                                                    Radno vreme
+                                                </h3>
+                                                <p className={styles.infoValue}>
+                                                    {settings.footer.workingHours.map(
+                                                        (wh, index) => (
+                                                            <span key={wh._key}>
+                                                                {wh.days}:{" "}
+                                                                {wh.hours}
+                                                                {index <
+                                                                    settings
+                                                                        .footer
+                                                                        .workingHours!
+                                                                        .length -
+                                                                        1 && (
+                                                                    <br />
+                                                                )}
+                                                            </span>
+                                                        )
+                                                    )}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    )}
                             </div>
 
                             {/* Social Links */}

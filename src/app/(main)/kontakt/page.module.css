@@ -225,11 +225,6 @@
     transform: translateY(-3px);
 }
 
-/* Form Column */
-.formColumn {
-    /* Just container */
-}
-
 .formCard {
     background-color: #fff;
     border-radius: 20px;

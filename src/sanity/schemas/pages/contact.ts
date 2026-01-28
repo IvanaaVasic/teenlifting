@@ -1,5 +1,4 @@
 import { HiMail } from "react-icons/hi";
-import { Rule } from "sanity";
 
 const contactPage = {
     name: "contactPage",

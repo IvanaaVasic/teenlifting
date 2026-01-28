@@ -179,6 +179,7 @@ export type SiteSettings = {
         address: string;
         phone: string;
         email: string;
+        workingHours?: { _key: string; days: string; hours: string }[];
     };
     socials: { _key: string; label: string; url: string }[];
 };
@@ -310,7 +311,12 @@ export async function getSiteSettings(): Promise<SiteSettings> {
             footer {
                 address,
                 phone,
-                email
+                email,
+                workingHours[] {
+                    _key,
+                    days,
+                    hours
+                }
             },
             socials[] {
                 _key,

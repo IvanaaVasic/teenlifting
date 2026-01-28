@@ -4,6 +4,7 @@ import {
     HiOutlineLocationMarker,
     HiOutlinePhone,
     HiOutlineMail,
+    HiOutlineClock,
 } from "react-icons/hi";
 import { FaFacebookF, FaInstagram, FaTiktok, FaYoutube } from "react-icons/fa";
 import type { SiteSettings } from "@/sanity/sanity-utils";
@@ -29,7 +30,7 @@ export function Footer({ settings }: FooterProps) {
     const { logo, footer, socials, mainNav, siteTitle } = settings;
     const currentYear = new Date().getFullYear();
 
-    const hasFooterInfo = footer?.address || footer?.phone || footer?.email;
+    const hasFooterInfo = footer?.address || footer?.phone || footer?.email || (footer?.workingHours && footer.workingHours.length > 0);
     const hasSocials = socials && socials.length > 0;
     const hasNav = mainNav && mainNav.length > 0;
 
@@ -148,6 +149,28 @@ export function Footer({ settings }: FooterProps) {
                                     </a>
                                 </li>
                             )}
+                            {footer?.workingHours &&
+                                footer.workingHours.length > 0 && (
+                                    <li className={styles.contactItem}>
+                                        <HiOutlineClock
+                                            className={styles.contactIcon}
+                                            size={20}
+                                        />
+                                        <span>
+                                            {footer.workingHours.map(
+                                                (wh, index) => (
+                                                    <span key={wh._key}>
+                                                        {wh.days}: {wh.hours}
+                                                        {index <
+                                                            footer.workingHours!
+                                                                .length -
+                                                                1 && <br />}
+                                                    </span>
+                                                )
+                                            )}
+                                        </span>
+                                    </li>
+                                )}
                         </ul>
                     </div>
                 </div>

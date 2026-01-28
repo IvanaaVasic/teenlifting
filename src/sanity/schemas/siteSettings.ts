@@ -118,9 +118,44 @@ const siteSettings = {
             name: "footer",
             type: "object",
             fields: [
-                { name: "address", type: "text" },
-                { name: "phone", type: "string" },
-                { name: "email", type: "string" },
+                { name: "address", title: "Adresa", type: "text" },
+                { name: "phone", title: "Telefon", type: "string" },
+                { name: "email", title: "Email", type: "string" },
+                {
+                    name: "workingHours",
+                    title: "Radno vreme",
+                    type: "array",
+                    of: [
+                        {
+                            type: "object",
+                            fields: [
+                                {
+                                    name: "days",
+                                    title: "Dani",
+                                    type: "string",
+                                    description: "npr. Pon - Pet, Sub, Ned",
+                                },
+                                {
+                                    name: "hours",
+                                    title: "Sati",
+                                    type: "string",
+                                    description: "npr. 09:00 - 20:00",
+                                },
+                            ],
+                            preview: {
+                                select: {
+                                    days: "days",
+                                    hours: "hours",
+                                },
+                                prepare({ days, hours }: { days: string; hours: string }) {
+                                    return {
+                                        title: `${days}: ${hours}`,
+                                    };
+                                },
+                            },
+                        },
+                    ],
+                },
             ],
             group: "general",
         },
