@@ -122,7 +122,7 @@ export type Card = {
 };
 
 export type Testimonial = {
-    _key: string;
+    _id: string;
     name: string;
     role?: string;
     text: string;
@@ -202,6 +202,7 @@ export type HomePage = {
 export type AboutPage = {
     hero: Hero;
     sections: ContentSection[];
+    testimonialsSection?: TestimonialsSection;
 };
 
 export type ContactPage = {
@@ -211,16 +212,7 @@ export type ContactPage = {
 
 export type PricePage = {
     hero: Hero;
-    categories: {
-        _key: string;
-        title: string;
-        items: {
-            _key: string;
-            name: string;
-            description: string;
-            price: string;
-        }[];
-    }[];
+    sections: ContentSection[];
 };
 
 export type PromotionPage = {
@@ -358,8 +350,8 @@ export async function getHomePage(): Promise<HomePage> {
             testimonialsSection {
                 title,
                 intro,
-                testimonials[] {
-                    _key,
+                testimonials[]-> {
+                    _id,
                     name,
                     role,
                     text,
@@ -375,7 +367,18 @@ export async function getAboutPage(): Promise<AboutPage> {
     return client.fetch(
         groq`*[_type == "aboutPage"][0] {
             ${heroFragment},
-            ${contentSectionFragment}
+            ${contentSectionFragment},
+            testimonialsSection {
+                title,
+                intro,
+                testimonials[]-> {
+                    _id,
+                    name,
+                    role,
+                    text,
+                    image { ${imageFragment} }
+                }
+            }
         }`
     );
 }
@@ -395,16 +398,7 @@ export async function getPricePage(): Promise<PricePage> {
     return client.fetch(
         groq`*[_type == "pricePage"][0] {
             ${heroFragment},
-            categories[] {
-                _key,
-                title,
-                items[] {
-                    _key,
-                    name,
-                    description,
-                    price
-                }
-            }
+            ${contentSectionFragment}
         }`
     );
 }

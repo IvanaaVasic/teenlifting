@@ -2,33 +2,22 @@ const pricePage = {
     name: "pricePage",
     title: "Price list",
     type: "document",
+    preview: {
+        prepare() {
+            return {
+                title: "Price list",
+            };
+        },
+    },
     fields: [
         { name: "hero", type: "hero" },
         {
-            name: "categories",
+            name: "sections",
+            title: "Content Sections",
+            description:
+                "Add content sections with text, images, tables, etc.",
             type: "array",
-            of: [
-                {
-                    type: "object",
-                    fields: [
-                        { name: "title", type: "string" },
-                        {
-                            name: "items",
-                            type: "array",
-                            of: [
-                                {
-                                    type: "object",
-                                    fields: [
-                                        { name: "name", type: "string" },
-                                        { name: "description", type: "text" },
-                                        { name: "price", type: "string" },
-                                    ],
-                                },
-                            ],
-                        },
-                    ],
-                },
-            ],
+            of: [{ type: "contentSection" }],
         },
     ],
 };

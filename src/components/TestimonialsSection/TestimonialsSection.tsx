@@ -118,7 +118,7 @@ export function TestimonialsSection({ data }: TestimonialsSectionProps) {
                     >
                         {testimonials.map((testimonial) => (
                             <SwiperSlide
-                                key={testimonial._key}
+                                key={testimonial._id}
                                 className={styles.slide}
                             >
                                 <TestimonialCard testimonial={testimonial} />
@@ -132,7 +132,7 @@ export function TestimonialsSection({ data }: TestimonialsSectionProps) {
                     >
                         {testimonials.map((testimonial) => (
                             <TestimonialCard
-                                key={testimonial._key}
+                                key={testimonial._id}
                                 testimonial={testimonial}
                             />
                         ))}

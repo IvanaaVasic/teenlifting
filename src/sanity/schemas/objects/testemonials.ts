@@ -1,7 +1,8 @@
 const testimonial = {
     name: "testimonial",
     title: "Testimonial",
-    type: "object",
+    type: "document",
+    icon: () => "💬",
     fields: [
         { name: "name", title: "Name", type: "string" },
         { name: "role", title: "Role / Title", type: "string" },

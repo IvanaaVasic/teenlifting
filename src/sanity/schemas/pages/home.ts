@@ -59,7 +59,7 @@ const homePage = {
                     name: "testimonials",
                     title: "Testimonials",
                     type: "array",
-                    of: [{ type: "testimonial" }],
+                    of: [{ type: "reference", to: [{ type: "testimonial" }] }],
                 },
             ],
         },

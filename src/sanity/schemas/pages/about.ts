@@ -16,6 +16,21 @@ const aboutPage = {
             type: "array",
             of: [{ type: "contentSection" }],
         },
+        {
+            name: "testimonialsSection",
+            title: "Testimonials section",
+            type: "object",
+            fields: [
+                { name: "title", title: "Title", type: "string" },
+                { name: "intro", title: "Intro", type: "text" },
+                {
+                    name: "testimonials",
+                    title: "Testimonials",
+                    type: "array",
+                    of: [{ type: "reference", to: [{ type: "testimonial" }] }],
+                },
+            ],
+        },
     ],
 };
 
