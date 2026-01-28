@@ -46,8 +46,10 @@ export default async function TreatmentPage({ params }: Props) {
     }
 
     return (
-        <>
-            <Hero hero={treatment.hero} />
+        <div className={styles.pageWrapper}>
+            <div className={styles.heroWrapper}>
+                <Hero hero={treatment.hero} />
+            </div>
 
             <article className={styles.article}>
                 {treatment.sections?.map((section) => (
@@ -103,6 +105,6 @@ export default async function TreatmentPage({ params }: Props) {
                     </div>
                 </section>
             </article>
-        </>
+        </div>
     );
 }

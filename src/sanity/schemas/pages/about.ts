@@ -2,6 +2,13 @@ const aboutPage = {
     name: "aboutPage",
     title: "About page",
     type: "document",
+    preview: {
+        prepare() {
+            return {
+                title: "About page",
+            };
+        },
+    },
     fields: [
         { name: "hero", type: "hero" },
         {
