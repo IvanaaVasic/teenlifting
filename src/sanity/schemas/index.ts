@@ -4,6 +4,7 @@ import aboutPage from "./pages/about";
 import contactPage from "./pages/contact";
 import pricePage from "./pages/price";
 import promotionPage from "./pages/promotion";
+import blogPage from "./pages/blogPage";
 import treatmentPage from "./documents/treatment";
 import blogPost from "./documents/blog";
 import hero from "./objects/hero";
@@ -20,6 +21,7 @@ const schemas = [
     contactPage,
     pricePage,
     promotionPage,
+    blogPage,
     treatmentPage,
     blogPost,
     hero,

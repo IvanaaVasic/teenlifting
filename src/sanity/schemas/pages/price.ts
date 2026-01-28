@@ -1,7 +1,10 @@
+import { HiCurrencyDollar } from "react-icons/hi";
+
 const pricePage = {
     name: "pricePage",
-    title: "Price list",
+    title: "Price list (Cenovnik)",
     type: "document",
+    icon: HiCurrencyDollar,
     preview: {
         prepare() {
             return {
@@ -14,8 +17,7 @@ const pricePage = {
         {
             name: "sections",
             title: "Content Sections",
-            description:
-                "Add content sections with text, images, tables, etc.",
+            description: "Add content sections with text, images, tables, etc.",
             type: "array",
             of: [{ type: "contentSection" }],
         },

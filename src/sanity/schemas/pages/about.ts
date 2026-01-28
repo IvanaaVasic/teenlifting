@@ -1,7 +1,10 @@
+import { HiUserGroup } from "react-icons/hi";
+
 const aboutPage = {
     name: "aboutPage",
-    title: "About page",
+    title: "About page (O nama)",
     type: "document",
+    icon: HiUserGroup,
     preview: {
         prepare() {
             return {

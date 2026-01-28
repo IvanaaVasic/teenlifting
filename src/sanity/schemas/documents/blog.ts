@@ -1,7 +1,10 @@
+import { HiDocumentText } from "react-icons/hi";
+
 const blogPost = {
     name: "post",
     title: "Blog post",
     type: "document",
+    icon: HiDocumentText,
     fields: [
         { name: "title", type: "string" },
         { name: "slug", type: "slug", options: { source: "title" } },

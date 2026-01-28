@@ -1,7 +1,10 @@
+import { HiCollection } from "react-icons/hi";
+
 const treatmentPage = {
     name: "treatmentPage",
-    title: "Treatment page",
+    title: "Treatment page (Tretmani)",
     type: "document",
+    icon: HiCollection,
     fields: [
         { name: "title", type: "string" },
         { name: "slug", type: "slug", options: { source: "title" } },

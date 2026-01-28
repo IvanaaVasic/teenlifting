@@ -3,6 +3,9 @@
     overflow: hidden;
     font-size: 14px;
     line-height: 1.25;
+    position: sticky;
+    top: var(--header-height);
+    z-index: 150;
 }
 
 /* Marquee container */
@@ -47,6 +50,7 @@
 @media (max-width: 768px) {
     .section {
         font-size: 13px;
+        top: var(--header-height-mobile);
     }
 
     .marquee {

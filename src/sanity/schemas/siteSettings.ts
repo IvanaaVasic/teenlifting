@@ -1,7 +1,10 @@
+import { HiCog } from "react-icons/hi";
+
 const siteSettings = {
     name: "siteSettings",
     title: "Site settings",
     type: "document",
+    icon: HiCog,
     groups: [
         {
             name: "general",

@@ -19,7 +19,7 @@ export interface BlogSectionProps {
     posts: BlogPost[];
 }
 
-function BlogCard({ post }: { post: BlogPost }) {
+export function BlogCard({ post }: { post: BlogPost }) {
     // Combine main image with gallery images
     const allImages: ImageType[] = [
         ...(post.mainImage ? [post.mainImage] : []),

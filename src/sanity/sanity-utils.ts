@@ -215,6 +215,10 @@ export type PricePage = {
     sections: ContentSection[];
 };
 
+export type BlogPage = {
+    hero?: Hero;
+};
+
 export type PromotionPage = {
     hero?: Hero;
     sections: ContentSection[];
@@ -396,6 +400,15 @@ export async function getPricePage(): Promise<PricePage> {
         groq`*[_type == "pricePage"][0] {
             ${heroFragment},
             ${contentSectionFragment}
+        }`
+    );
+}
+
+// Blog Page (listing hero)
+export async function getBlogPage(): Promise<BlogPage | null> {
+    return client.fetch(
+        groq`*[_type == "blogPage"][0] {
+            ${heroFragment}
         }`
     );
 }

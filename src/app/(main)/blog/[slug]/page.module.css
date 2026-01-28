@@ -1,0 +1,167 @@
+.article {
+    background-color: var(--color-background);
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.hero {
+    position: relative;
+    min-height: 520px;
+    display: flex;
+    align-items: flex-end;
+    color: #ffffff;
+    overflow: hidden;
+    background-color: var(--color-text-dark);
+}
+
+.heroImage {
+    position: absolute;
+    inset: 0;
+}
+
+.heroImg {
+    object-fit: cover;
+}
+
+.heroOverlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.25) 0%,
+        rgba(0, 0, 0, 0.65) 100%
+    );
+}
+
+.heroContent {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding: 80px 0 56px;
+}
+
+.date {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 12px;
+}
+
+.title {
+    margin: 0 0 14px;
+    font-size: 44px;
+    font-weight: 800;
+    line-height: 1.1;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+.excerpt {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.9);
+    max-width: 780px;
+}
+
+.body {
+    padding: 56px 0 90px;
+}
+
+.gallery {
+    margin-top: 48px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.galleryItem {
+    margin: 0;
+}
+
+.galleryImage {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background-color: var(--color-background-alt);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+}
+
+.galleryImg {
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+}
+
+.galleryImage:hover .galleryImg {
+    transform: scale(1.02);
+}
+
+.galleryCaption {
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--color-text-light);
+    font-style: italic;
+    text-align: center;
+}
+
+@media (max-width: 1024px) {
+    .hero {
+        min-height: 480px;
+    }
+
+    .title {
+        font-size: 36px;
+    }
+
+    .gallery {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 16px;
+    }
+
+    .hero {
+        min-height: 440px;
+    }
+
+    .heroContent {
+        padding: 64px 0 44px;
+    }
+
+    .title {
+        font-size: 30px;
+    }
+
+    .excerpt {
+        font-size: 16px;
+    }
+
+    .body {
+        padding: 44px 0 70px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero {
+        min-height: 420px;
+    }
+
+    .title {
+        font-size: 26px;
+    }
+
+    .gallery {
+        grid-template-columns: 1fr;
+    }
+}
+

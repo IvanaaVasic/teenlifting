@@ -1,8 +1,10 @@
+import { HiChatAlt2 } from "react-icons/hi";
+
 const testimonial = {
     name: "testimonial",
-    title: "Testimonial",
+    title: "Testimonial (Recenzija) blok",
     type: "document",
-    icon: () => "💬",
+    icon: HiChatAlt2,
     fields: [
         { name: "name", title: "Name", type: "string" },
         { name: "role", title: "Role / Title", type: "string" },

@@ -1,1 +1,1 @@
-export { BlogSection } from "./BlogSection";
+export { BlogSection, BlogCard } from "./BlogSection";

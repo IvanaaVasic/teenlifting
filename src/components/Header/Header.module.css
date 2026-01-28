@@ -1,7 +1,7 @@
 .header {
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 200;
     background-color: var(--color-background);
     box-shadow: var(--shadow-sm);
 }
@@ -115,6 +115,7 @@
     background-color: var(--color-background);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
+    z-index: 210;
     opacity: 0;
     visibility: hidden;
     transform: translateY(8px);
@@ -181,7 +182,7 @@
     overflow-y: auto;
     transform: translateX(100%);
     transition: transform var(--transition-slow);
-    z-index: 99;
+    z-index: 205;
 }
 
 .mobileNavOpen {
@@ -274,7 +275,7 @@
     right: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.3);
-    z-index: 98;
+    z-index: 204;
 }
 
 /* Responsive adjustments */

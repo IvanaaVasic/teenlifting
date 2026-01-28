@@ -289,7 +289,7 @@
 /* Treat last column as price / value */
 .dataCell:last-child {
     text-align: left;
-    white-space: nowrap;
+    white-space: pre-wrap;
 }
 
 .dataCell:last-child::before {

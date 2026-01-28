@@ -1,9 +1,11 @@
 // import type { Rule } from "sanity";
+import { HiHome } from "react-icons/hi";
 
 const homePage = {
     name: "homePage",
-    title: "Home page",
+    title: "Home page (Početna)",
     type: "document",
+    icon: HiHome,
     preview: {
         prepare() {
             return {
