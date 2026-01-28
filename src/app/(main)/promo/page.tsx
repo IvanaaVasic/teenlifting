@@ -54,10 +54,7 @@ export default async function PromoPage() {
                 ))}
 
                 {/* Contact CTA */}
-                <ContactCTA
-                    data={promoPage?.contactCta}
-                    showDefault={false}
-                />
+                <ContactCTA data={promoPage?.contactCta} showDefault={false} />
             </article>
         </div>
     );
