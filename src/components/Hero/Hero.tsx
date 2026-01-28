@@ -12,7 +12,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 
 export interface HeroProps {
-    hero: HeroType;
+    hero?: HeroType;
 }
 
 export function Hero({ hero }: HeroProps) {

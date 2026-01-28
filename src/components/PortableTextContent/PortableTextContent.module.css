@@ -221,14 +221,14 @@
 
 /* Table */
 .tableWrapper {
-    margin: 16px 0;
+    margin: 28px 0;
 }
 
 .tableTitle {
-    font-size: 18px;
+    font-size: 19px;
     font-weight: 600;
     color: var(--color-text-dark);
-    margin: 0 0 12px;
+    margin: 0 0 14px;
 }
 
 .table {
@@ -237,28 +237,36 @@
     font-size: 15px;
     line-height: 1.6;
     table-layout: fixed;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    background-color: #ffffff;
 }
 
 .headerRow {
-    background-color: var(--color-primary);
-    color: #ffffff;
+    background-color: var(--color-secondary);
+    color: var(--color-background-alt);
 }
 
 .headerCell {
-    padding: 14px 16px;
+    padding: 11px 18px;
     text-align: left;
     font-weight: 600;
     word-wrap: break-word;
     overflow-wrap: break-word;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    font-size: 12px;
 }
 
 .dataRow {
-    border-bottom: 1px solid var(--color-border);
+    border-bottom: 1px solid rgba(15, 23, 42, 0.04);
     transition: background-color var(--transition-fast);
 }
 
 .dataRow:hover {
-    background-color: var(--color-background-alt);
+    background-color: #f9fbff;
 }
 
 .dataRow:last-child {
@@ -266,15 +274,32 @@
 }
 
 .dataCell {
-    padding: 14px 16px;
+    padding: 11px 18px;
     color: var(--color-text);
     word-wrap: break-word;
     overflow-wrap: break-word;
+    vertical-align: middle;
 }
 
 .dataCell:first-child {
-    font-weight: 500;
-    color: var(--color-primary);
+    font-weight: 600;
+    color: var(--color-text-dark);
+}
+
+/* Treat last column as price / value */
+.dataCell:last-child {
+    text-align: left;
+    white-space: nowrap;
+}
+
+.dataCell:last-child::before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background-color: var(--color-primary);
+    margin-right: 8px;
 }
 
 /* Gallery */

@@ -216,11 +216,8 @@ export type PricePage = {
 };
 
 export type PromotionPage = {
-    _id: string;
-    title: string;
-    slug: string;
-    hero: Hero;
-    content: PortableTextBlock[];
+    hero?: Hero;
+    sections: ContentSection[];
 };
 
 export type TreatmentPage = {
@@ -403,28 +400,12 @@ export async function getPricePage(): Promise<PricePage> {
     );
 }
 
-// Promotion Page (single)
-export async function getPromotionPage(slug: string): Promise<PromotionPage> {
+// Promo Page (single page, article-style)
+export async function getPromoPage(): Promise<PromotionPage | null> {
     return client.fetch(
-        groq`*[_type == "promotionPage" && slug.current == $slug][0] {
-            _id,
-            title,
-            "slug": slug.current,
+        groq`*[_type == "promotionPage"][0] {
             ${heroFragment},
-            content
-        }`,
-        { slug }
-    );
-}
-
-// All Promotions (for listing)
-export async function getAllPromotions(): Promise<PromotionPage[]> {
-    return client.fetch(
-        groq`*[_type == "promotionPage"] | order(_createdAt desc) {
-            _id,
-            title,
-            "slug": slug.current,
-            ${heroFragment}
+            ${contentSectionFragment}
         }`
     );
 }
@@ -574,11 +555,7 @@ export async function getTreatmentSlugs(): Promise<{ slug: string }[]> {
     );
 }
 
-// Promotion Slugs (for static generation)
-export async function getPromotionSlugs(): Promise<{ slug: string }[]> {
-    return client.fetch(
-        groq`*[_type == "promotionPage" && defined(slug.current)] {
-            "slug": slug.current
-        }`
-    );
+// Promo page path (single page, no slug in schema)
+export function getPromoPath(): string {
+    return "promo";
 }
