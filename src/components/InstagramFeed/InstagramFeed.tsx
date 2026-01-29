@@ -7,7 +7,7 @@ interface InstagramFeedProps {
 }
 
 export function InstagramFeed({
-    title = "Pratite nas na Instagramu",
+    title = "Pratite nas na Instagramu (trenutno je moj profil povezan za testiranje :) )",
     embedId = "1117064",
 }: InstagramFeedProps) {
     return (
