@@ -12,6 +12,7 @@ export {
 export { ContactForm } from "./ContactForm";
 export { ContactCTA } from "./ContactCTA";
 export type { ContactCTAData } from "./ContactCTA";
+export { InstagramFeed } from "./InstagramFeed";
 export {
     OrganizationJsonLd,
     WebPageJsonLd,

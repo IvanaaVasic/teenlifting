@@ -5,6 +5,7 @@ import {
     CardSection,
     BlogSection,
     TestimonialsSection,
+    InstagramFeed,
 } from "@/components";
 
 export default async function Home() {
@@ -25,6 +26,7 @@ export default async function Home() {
                 homePage.testimonialsSection.testimonials?.length > 0 && (
                     <TestimonialsSection data={homePage.testimonialsSection} />
                 )}
+            <InstagramFeed />
         </>
     );
 }
