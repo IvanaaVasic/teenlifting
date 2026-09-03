@@ -294,9 +294,22 @@ export type BlogPage = {
     hero?: Hero;
 };
 
+export type PromotionOffer = {
+    label?: string;
+    price?: string;
+    currency?: string;
+    oldPrice?: string;
+    note?: string;
+    buttonLabel?: string;
+    buttonHref?: string;
+    terms?: string;
+};
+
 export type PromotionPage = {
+    active?: boolean;
     hero?: Hero;
     sections: ContentSection[];
+    offer?: PromotionOffer;
     contactCta?: ContactCTAType;
 };
 
@@ -567,8 +580,19 @@ export async function getBlogPage(): Promise<BlogPage | null> {
 export async function getPromoPage(): Promise<PromotionPage | null> {
     return client.fetch(
         groq`*[_type == "promotionPage"][0] {
+            active,
             ${heroFragment},
             ${contentSectionFragment},
+            offer {
+                label,
+                price,
+                currency,
+                oldPrice,
+                note,
+                buttonLabel,
+                buttonHref,
+                terms
+            },
             contactCta {
                 title,
                 text,
@@ -577,6 +601,17 @@ export async function getPromoPage(): Promise<PromotionPage | null> {
             }
         }`
     );
+}
+
+/**
+ * The promo page is seasonal. An unset flag counts as visible, so switching the
+ * page off is always a deliberate act in the studio.
+ */
+export async function isPromoActive(): Promise<boolean> {
+    const active = await client.fetch<boolean | null>(
+        groq`*[_type == "promotionPage"][0].active`
+    );
+    return active !== false;
 }
 
 // Treatment Page (single by slug)
