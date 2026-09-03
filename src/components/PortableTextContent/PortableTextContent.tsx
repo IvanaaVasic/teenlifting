@@ -122,10 +122,20 @@ export const portableTextComponents: PortableTextComponents = {
                     String(row.cells[row.cells.length - 1] || "").length <= 24
             );
 
+            /*
+             * The data attributes are the hook a page needs to restyle a table
+             * without reaching for a hashed CSS module class - the price list
+             * turns these titles into numbered group headings.
+             */
             return (
-                <div className={styles.tableWrapper}>
+                <div className={styles.tableWrapper} data-block="table">
                     {value.title && (
-                        <h4 className={styles.tableTitle}>{value.title}</h4>
+                        <h4
+                            className={styles.tableTitle}
+                            data-block="table-title"
+                        >
+                            {value.title}
+                        </h4>
                     )}
                     <table
                         className={`${styles.table} ${

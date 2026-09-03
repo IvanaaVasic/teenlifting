@@ -267,9 +267,26 @@ export type ContactCTAType = {
     buttonHref?: string;
 };
 
+export type PriceAsideImage = Image & {
+    alt?: string;
+    caption?: string;
+};
+
+export type PriceAsideNote = {
+    _key: string;
+    label?: string;
+    text?: string;
+};
+
+export type PriceAside = {
+    images?: PriceAsideImage[];
+    notes?: PriceAsideNote[];
+};
+
 export type PricePage = {
     hero: Hero;
     sections: ContentSection[];
+    aside?: PriceAside;
     contactCta?: ContactCTAType;
 };
 
@@ -514,6 +531,19 @@ export async function getPricePage(): Promise<PricePage> {
         groq`*[_type == "pricePage"][0] {
             ${heroFragment},
             ${contentSectionFragment},
+            aside {
+                images[] {
+                    _key,
+                    alt,
+                    caption,
+                    ${imageFragment}
+                },
+                notes[] {
+                    _key,
+                    label,
+                    text
+                }
+            },
             contactCta {
                 title,
                 text,
