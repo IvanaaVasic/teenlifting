@@ -81,7 +81,7 @@ export default async function Home() {
                 />
             )}
 
-            <ContactCTA data={homePage?.contactCta} showDefault={false} variant="paper" />
+            <ContactCTA data={homePage?.contactCta} showDefault={false} />
         </>
     );
 }

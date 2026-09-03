@@ -19,8 +19,9 @@ interface ContactCTAProps {
     showDefault?: boolean;
     /**
      * Presentation only — the data shape is identical either way.
-     * "ink" is the dark panel used on inner pages; "paper" is the lighter
-     * band the homepage closes on, so it doesn't collide with the footer.
+     * "paper" is the default because this section always sits directly above
+     * the footer, and the footer is the same ink as the "ink" variant: the two
+     * dark bands read as one block. "ink" stays for a placement mid-page.
      */
     variant?: "ink" | "paper";
 }
@@ -32,7 +33,7 @@ export function ContactCTA({
     defaultButtonLabel = "Kontaktirajte nas",
     defaultButtonHref = "/kontakt",
     showDefault = true,
-    variant = "ink",
+    variant = "paper",
 }: ContactCTAProps) {
     // If showDefault is false and no data exists, don't render
     const hasData =
