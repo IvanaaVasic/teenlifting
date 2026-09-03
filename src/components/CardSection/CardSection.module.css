@@ -3,7 +3,7 @@
  * `.withTopPadding` restores that gap when Metoda is empty in Sanity.
  */
 .section {
-    padding: 0 var(--page-padding) 96px;
+    padding: 0 var(--page-gutter) 96px;
 }
 
 .withTopPadding {
@@ -184,7 +184,7 @@
 
 @media (max-width: 768px) {
     .section {
-        padding: 0 16px 64px;
+        padding: 0 var(--page-gutter) 64px;
     }
 
     .withTopPadding {

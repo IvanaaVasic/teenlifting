@@ -1,5 +1,5 @@
 .section {
-    padding: 96px var(--page-padding);
+    padding: 96px var(--page-gutter);
 }
 
 .header {
@@ -135,7 +135,7 @@
 
 @media (max-width: 768px) {
     .section {
-        padding: 64px 16px;
+        padding: 64px var(--page-gutter);
     }
 
     .header {

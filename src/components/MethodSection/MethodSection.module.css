@@ -2,7 +2,7 @@
     display: grid;
     grid-template-columns: 340px 1fr;
     gap: 80px;
-    padding: 96px var(--page-padding);
+    padding: 96px var(--page-gutter);
     border-top: 1px solid var(--color-border);
 }
 
@@ -70,7 +70,7 @@
     .section {
         grid-template-columns: 1fr;
         gap: 32px;
-        padding: 72px var(--page-padding);
+        padding: 72px var(--page-gutter);
     }
 
     .title {

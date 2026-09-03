@@ -21,7 +21,7 @@
     gap: 24px;
     max-width: var(--container-max-width);
     margin: 0 auto;
-    padding: 22px var(--page-padding);
+    padding: 22px var(--page-gutter);
     background-color: var(--color-background);
 }
 
@@ -358,7 +358,7 @@
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .container {
-        padding: 17px 16px;
+        padding: 17px var(--page-gutter);
     }
 
     .logoText {

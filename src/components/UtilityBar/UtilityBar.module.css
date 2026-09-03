@@ -4,7 +4,7 @@
     justify-content: space-between;
     gap: 20px;
     height: var(--utility-bar-height);
-    padding: 0 var(--page-padding);
+    padding: 0 var(--page-gutter);
     background-color: var(--color-primary);
     color: rgba(255, 255, 255, 0.92);
     font-size: 11px;

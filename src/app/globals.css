@@ -40,8 +40,19 @@
 
     /* Spacing */
     --container-max-width: 1920px;
-    --content-max-width: 1280px;
+    /*
+     * Inner measure of the design's 1280px grid, minus its two 40px gutters.
+     * --page-gutter grows past --page-padding once the viewport is wider, so a
+     * section keeps a full bleed background while its content stays centred and
+     * never runs past the width everything was drawn at. It is measured against
+     * 100vw, not 100%, so it also works inside a split grid such as the hero.
+     */
+    --content-max-width: 1200px;
     --page-padding: 40px;
+    --page-gutter: max(
+        var(--page-padding),
+        calc((100vw - var(--content-max-width)) / 2)
+    );
     --header-height: 74px;
     --header-height-mobile: 64px;
     --utility-bar-height: 40px;
@@ -61,6 +72,12 @@
     --shadow-sm: none;
     --shadow-md: none;
     --shadow-lg: none;
+}
+
+@media (max-width: 768px) {
+    :root {
+        --page-padding: 16px;
+    }
 }
 
 /* ============================================

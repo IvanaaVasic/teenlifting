@@ -1,5 +1,5 @@
 .section {
-    padding: 96px var(--page-padding);
+    padding: 96px var(--page-gutter);
     background-color: var(--color-background-alt);
     border-top: 1px solid var(--color-border);
 }
@@ -133,7 +133,7 @@
 /* Responsive */
 @media (max-width: 1024px) {
     .section {
-        padding: 72px var(--page-padding);
+        padding: 72px var(--page-gutter);
     }
 
     .grid {
@@ -147,7 +147,7 @@
 
 @media (max-width: 768px) {
     .section {
-        padding: 56px 16px;
+        padding: 56px var(--page-gutter);
     }
 
     .header {
