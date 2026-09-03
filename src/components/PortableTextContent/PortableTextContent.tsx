@@ -110,12 +110,28 @@ export const portableTextComponents: PortableTextComponents = {
         dataTable: ({ value }) => {
             if (!value?.rows?.length) return null;
 
+            /*
+             * A price table right-aligns its last column and keeps it on one
+             * line; a table whose last column is prose must not. Nothing in the
+             * schema says which this is, so go by the cells.
+             */
+            const isValueTable = value.rows.every(
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                (row: any) =>
+                    !row.cells?.length ||
+                    String(row.cells[row.cells.length - 1] || "").length <= 24
+            );
+
             return (
                 <div className={styles.tableWrapper}>
                     {value.title && (
                         <h4 className={styles.tableTitle}>{value.title}</h4>
                     )}
-                    <table className={styles.table}>
+                    <table
+                        className={`${styles.table} ${
+                            isValueTable ? styles.valueTable : ""
+                        }`}
+                    >
                         <tbody>
                             {value.rows.map(
                                 // eslint-disable-next-line @typescript-eslint/no-explicit-any

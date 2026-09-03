@@ -275,7 +275,6 @@
 
 .table {
     width: 100%;
-    min-width: 420px;
     border-collapse: collapse;
     font-size: 15px;
     line-height: 1.6;
@@ -306,14 +305,18 @@
     color: var(--color-text-dark);
 }
 
-/* Last column reads as the price / value */
-.headerCell:not(:first-child):last-child,
-.dataCell:not(:first-child):last-child {
+/*
+ * Only on a table whose last column holds values - a price, a duration. The
+ * renderer decides by cell length. Applied to every table, nowrap turned a
+ * column of prose into one 1200px line and forced a scrollbar on a phone.
+ */
+.valueTable .headerCell:not(:first-child):last-child,
+.valueTable .dataCell:not(:first-child):last-child {
     text-align: right;
     white-space: nowrap;
 }
 
-.dataCell:not(:first-child):last-child {
+.valueTable .dataCell:not(:first-child):last-child {
     font-weight: 500;
     color: var(--color-text-dark);
 }
