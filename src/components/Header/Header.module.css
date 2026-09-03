@@ -19,8 +19,6 @@
     align-items: center;
     justify-content: space-between;
     gap: 24px;
-    max-width: var(--container-max-width);
-    margin: 0 auto;
     padding: 22px var(--page-gutter);
     background-color: var(--color-background);
 }

@@ -195,8 +195,9 @@
         font-size: 60px;
     }
 
+    /* 40px on the right is the gap to the image, not a page gutter. */
     .copy {
-        padding: 72px 40px;
+        padding: 72px 40px 72px var(--page-gutter);
     }
 }
 

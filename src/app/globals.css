@@ -41,13 +41,17 @@
     /* Spacing */
     --container-max-width: 1920px;
     /*
-     * Inner measure of the design's 1280px grid, minus its two 40px gutters.
      * --page-gutter grows past --page-padding once the viewport is wider, so a
-     * section keeps a full bleed background while its content stays centred and
-     * never runs past the width everything was drawn at. It is measured against
-     * 100vw, not 100%, so it also works inside a split grid such as the hero.
+     * section keeps a full bleed background while its content stays centred.
+     * 1440px is the conventional container width; the prototype was drawn at
+     * 1280px, so proportions run a little wider here than in the handoff.
+     *
+     * Measured against 100vw rather than 100%, so it holds inside a split grid
+     * such as the hero. That also means it must not be applied to an element
+     * that is itself narrower than the viewport - the padding would be computed
+     * for the full screen and squeeze the element's content box.
      */
-    --content-max-width: 1200px;
+    --content-max-width: 1440px;
     --page-padding: 40px;
     --page-gutter: max(
         var(--page-padding),
