@@ -184,6 +184,11 @@
     aspect-ratio: 16/9;
 }
 
+/* Thirds are the muscle diagrams on treatment pages - square in the design. */
+.imageThird .imageWrapper {
+    aspect-ratio: 1;
+}
+
 .image {
     object-fit: cover;
     transition: transform var(--transition-slow);
@@ -312,6 +317,137 @@
 .dataCell:not(:first-child):last-child {
     font-weight: 500;
     color: var(--color-text-dark);
+}
+
+/* Numbered steps */
+.stepsBlock,
+.faqBlock {
+    margin: 0 0 28px;
+}
+
+.stepsBlock .heading2,
+.faqBlock .heading2 {
+    margin-bottom: 0;
+}
+
+.stepsList {
+    margin-top: 24px;
+}
+
+.step {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 24px;
+    padding: 22px 0;
+    border-top: 1px solid var(--color-border);
+}
+
+.step:last-child {
+    border-bottom: 1px solid var(--color-border);
+}
+
+.stepNumber {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--color-primary-hover);
+}
+
+.stepTitle {
+    margin: 0;
+    font-family: var(--font-ui);
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: 0;
+    color: var(--color-text-dark);
+}
+
+.stepText {
+    margin: 6px 0 0;
+    font-size: 15px;
+    line-height: 1.65;
+    color: #6e6763;
+}
+
+/* FAQ accordion */
+.faqList {
+    margin-top: 24px;
+    border-top: 1px solid var(--color-text-dark);
+}
+
+.faqItem {
+    padding: 22px 0;
+    border-bottom: 1px solid var(--color-border);
+}
+
+/*
+ * Negative margin against equal padding: the row keeps the design's position
+ * while the tap target grows past 44px.
+ */
+.faqQuestion {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 24px;
+    width: 100%;
+    margin: -11px 0;
+    padding: 11px 0;
+    background: none;
+    border: none;
+    font-family: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.faqQuestionText {
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--color-text-dark);
+    transition: color var(--transition-fast);
+}
+
+.faqQuestion:hover .faqQuestionText {
+    color: var(--color-primary-hover);
+}
+
+.faqToggle {
+    flex-shrink: 0;
+    font-size: 18px;
+    line-height: 1;
+    color: var(--color-text-light);
+}
+
+/*
+ * Collapsing on grid rows rather than max-height: the row resolves to the
+ * answer's real height, so the 0.3s timing holds whatever its length.
+ */
+.faqAnswerWrapper {
+    display: grid;
+    grid-template-rows: minmax(0, 0fr);
+    visibility: hidden;
+    transition:
+        grid-template-rows var(--transition-slow),
+        visibility var(--transition-slow);
+}
+
+.faqAnswerOpen {
+    grid-template-rows: minmax(0, 1fr);
+    visibility: visible;
+}
+
+.faqAnswer {
+    overflow: hidden;
+    min-height: 0;
+    margin: 0;
+    padding-top: 12px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #6e6763;
+    max-width: 660px;
+    text-wrap: pretty;
 }
 
 /* Gallery */

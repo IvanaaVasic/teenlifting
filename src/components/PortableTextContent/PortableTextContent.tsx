@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { PortableText, PortableTextComponents } from "@portabletext/react";
 import { normalizeHref } from "@/utils/href";
+import { blockAnchorId, blockText, slugify } from "@/utils/toc";
+import { FaqAccordion } from "./FaqAccordion";
 import styles from "./PortableTextContent.module.css";
 
 export const portableTextComponents: PortableTextComponents = {
@@ -156,17 +158,76 @@ export const portableTextComponents: PortableTextComponents = {
                 </div>
             );
         },
+        numberedSteps: ({ value }) => {
+            const steps = (value?.steps || []).filter(
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                (step: any) => step?.title || step?.text
+            );
+            if (!steps.length) return null;
+
+            return (
+                <div className={styles.stepsBlock}>
+                    {value.title && (
+                        <h2
+                            id={slugify(value.title)}
+                            className={styles.heading2}
+                        >
+                            {value.title}
+                        </h2>
+                    )}
+                    <div className={styles.stepsList}>
+                        {steps.map(
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                            (step: any, index: number) => (
+                                <div
+                                    key={step._key || index}
+                                    className={styles.step}
+                                >
+                                    <span className={styles.stepNumber}>
+                                        {String(index + 1).padStart(2, "0")}
+                                    </span>
+                                    <div>
+                                        {step.title && (
+                                            <h3 className={styles.stepTitle}>
+                                                {step.title}
+                                            </h3>
+                                        )}
+                                        {step.text && (
+                                            <p className={styles.stepText}>
+                                                {step.text}
+                                            </p>
+                                        )}
+                                    </div>
+                                </div>
+                            )
+                        )}
+                    </div>
+                </div>
+            );
+        },
+        faqSection: ({ value }) => (
+            <FaqAccordion title={value?.title} items={value?.items} />
+        ),
     },
     block: {
-        h2: ({ children }) => <h2 className={styles.heading2}>{children}</h2>,
+        // The id lets the sticky "Na ovoj strani" list scroll here; it is
+        // derived from the heading text by the same helper the list uses.
+        h2: ({ children, value }) => (
+            <h2 id={blockAnchorId(value)} className={styles.heading2}>
+                {children}
+            </h2>
+        ),
         h3: ({ children }) => <h3 className={styles.heading3}>{children}</h3>,
         h4: ({ children }) => <h4 className={styles.heading4}>{children}</h4>,
         blockquote: ({ children }) => (
             <blockquote className={styles.blockquote}>{children}</blockquote>
         ),
-        normal: ({ children }) => (
-            <p className={styles.paragraph}>{children}</p>
-        ),
+        // Editors leave blank lines between paragraphs; rendered, each one is
+        // an empty 30px gap in the flow.
+        normal: ({ children, value }) =>
+            blockText(value) ? (
+                <p className={styles.paragraph}>{children}</p>
+            ) : null,
     },
     list: {
         bullet: ({ children }) => (
