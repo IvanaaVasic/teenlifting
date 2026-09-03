@@ -191,6 +191,7 @@ export type SiteSettings = {
     headerCta?: CTA;
     mainNav: NavItem[];
     footer: {
+        about?: string;
         address: string;
         phone: string;
         email: string;
@@ -367,6 +368,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
                 }
             },
             footer {
+                about,
                 address,
                 phone,
                 email,

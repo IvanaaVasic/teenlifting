@@ -127,6 +127,14 @@ const siteSettings = {
             name: "footer",
             type: "object",
             fields: [
+                {
+                    name: "about",
+                    title: "Kratak opis",
+                    description:
+                        "Tekst ispod logotipa u footeru. Npr. „Profesionalni tretmani za lice i telo.”",
+                    type: "text",
+                    rows: 2,
+                },
                 { name: "address", title: "Adresa", type: "text" },
                 { name: "phone", title: "Telefon", type: "string" },
                 { name: "email", title: "Email", type: "string" },

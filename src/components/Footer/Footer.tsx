@@ -32,7 +32,8 @@ export function Footer({ settings }: FooterProps) {
     const hasSocials = socials && socials.length > 0;
     const hasNav = mainNav && mainNav.length > 0;
 
-    if (!logo && !hasFooterInfo && !hasSocials && !hasNav) return null;
+    if (!logo && !footer?.about && !hasFooterInfo && !hasSocials && !hasNav)
+        return null;
 
     // Treatment column lists the groups, not every subtype — a group without
     // its own href falls back to the first subtype under it.
@@ -69,10 +70,9 @@ export function Footer({ settings }: FooterProps) {
                             {siteTitle || "Teenlifting"}
                         </Link>
                     )}
-                    <p className={styles.about}>
-                        Profesionalni tretmani za lice i telo. Vaša lepota je
-                        naša misija.
-                    </p>
+                    {footer?.about && (
+                        <p className={styles.about}>{footer.about}</p>
+                    )}
                 </div>
 
                 {/* Treatments */}
