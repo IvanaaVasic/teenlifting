@@ -14,6 +14,7 @@ import testimonial from "./objects/testemonials";
 import cta from "./objects/cta";
 import contactCta from "./objects/contactCta";
 import announcement from "./objects/announcement";
+import beforeAfterSection from "./objects/beforeAfter";
 
 const schemas = [
     siteSettings,
@@ -32,6 +33,7 @@ const schemas = [
     cta,
     contactCta,
     announcement,
+    beforeAfterSection,
 ];
 
 export default schemas;

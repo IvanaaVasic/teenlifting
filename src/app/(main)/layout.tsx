@@ -1,6 +1,7 @@
 import { getSiteSettings } from "@/sanity/sanity-utils";
 import {
     AnnouncementBar,
+    UtilityBar,
     Header,
     Footer,
     OrganizationJsonLd,
@@ -16,6 +17,7 @@ export default async function MainLayout({
     return (
         <>
             <OrganizationJsonLd settings={settings} />
+            <UtilityBar settings={settings} />
             <Header settings={settings} />
             <AnnouncementBar announcement={settings?.announcement} />
             <main>{children}</main>

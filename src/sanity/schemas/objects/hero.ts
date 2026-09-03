@@ -20,8 +20,22 @@ const hero = {
                             options: { hotspot: true },
                         },
                         {
+                            name: "eyebrow",
+                            title: "Eyebrow",
+                            description:
+                                "Sitan tekst iznad naslova, verzalom. Npr. „Magazin AS IF · šest najboljih metoda u svetu”.",
+                            type: "string",
+                        },
+                        {
                             name: "title",
                             title: "Title",
+                            type: "string",
+                        },
+                        {
+                            name: "titleItalic",
+                            title: "Title - second line (italic)",
+                            description:
+                                "Druga linija naslova, renderuje se u italiku. Npr. naslov „Aktiviraj,” + ovo polje „ne plastificiraj.”",
                             type: "string",
                         },
                         {
@@ -34,6 +48,45 @@ const hero = {
                             name: "cta",
                             title: "Call to Action",
                             type: "cta",
+                        },
+                        {
+                            name: "secondaryCta",
+                            title: "Secondary Call to Action",
+                            description:
+                                "Drugo dugme, sa okvirom umesto pune pozadine. Opciono.",
+                            type: "cta",
+                        },
+                        {
+                            name: "stats",
+                            title: "Stats",
+                            description:
+                                "Red statistika ispod dugmadi. Npr. 1990. / Razvijena metoda.",
+                            type: "array",
+                            of: [
+                                {
+                                    type: "object",
+                                    name: "heroStat",
+                                    title: "Stat",
+                                    fields: [
+                                        {
+                                            name: "value",
+                                            title: "Value",
+                                            type: "string",
+                                        },
+                                        {
+                                            name: "label",
+                                            title: "Label",
+                                            type: "string",
+                                        },
+                                    ],
+                                    preview: {
+                                        select: {
+                                            title: "value",
+                                            subtitle: "label",
+                                        },
+                                    },
+                                },
+                            ],
                         },
                         {
                             name: "overlay",

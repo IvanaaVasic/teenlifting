@@ -1,106 +1,106 @@
-/* Contact CTA */
 .contactCta {
-    padding: 80px 0;
-    background: linear-gradient(
-        135deg,
-        var(--color-primary) 0%,
-        var(--color-secondary) 100%
-    );
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 48px;
+    padding: 64px var(--page-padding);
+    background-color: var(--color-text-dark);
+    color: var(--color-on-dark);
 }
 
-.container {
-    max-width: 700px;
-    margin: 0 auto;
-    padding: 0 24px;
+/* Paper variant — same layout, lighter surface, ink type. */
+.paper {
+    padding: 80px var(--page-padding);
+    background-color: var(--color-background-alt);
+    border-top: 1px solid var(--color-border);
+    color: var(--color-text);
+}
+
+.paper .title {
+    font-size: 40px;
+    color: var(--color-text-dark);
+}
+
+.paper .text {
+    color: var(--color-text-secondary);
+}
+
+.copy {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
 }
 
 .title {
-    font-size: 32px;
-    font-weight: 700;
-    color: #ffffff;
-    margin: 0 0 16px;
-    line-height: 1.3;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 38px;
+    font-weight: 300;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--color-on-dark);
 }
 
 .text {
-    font-size: 18px;
-    color: rgba(255, 255, 255, 0.9);
-    margin: 0 0 32px;
-    line-height: 1.6;
+    margin: 0;
+    max-width: 520px;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--color-on-dark-muted);
 }
 
 .button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 16px 40px;
-    background-color: #ffffff;
-    color: var(--color-primary);
-    font-size: 16px;
+    flex-shrink: 0;
+    padding: 20px 34px;
+    background-color: var(--color-primary);
+    color: #ffffff;
+    font-family: var(--font-ui);
+    font-size: 13px;
     font-weight: 600;
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
     text-decoration: none;
-    border-radius: var(--radius-md);
-    transition:
-        background-color var(--transition-fast),
-        transform var(--transition-fast),
-        box-shadow var(--transition-fast);
+    white-space: nowrap;
+    transition: background-color var(--transition-fast);
 }
 
 .button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    background-color: var(--color-primary-hover);
 }
 
 /* Responsive */
 @media (max-width: 1024px) {
     .contactCta {
-        padding: 60px 0;
+        gap: 32px;
     }
 
     .title {
-        font-size: 28px;
+        font-size: 32px;
     }
 }
 
 @media (max-width: 768px) {
     .contactCta {
-        padding: 48px 0;
-    }
-
-    .container {
-        padding: 0 16px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 28px;
+        padding: 48px 16px;
     }
 
     .title {
-        font-size: 24px;
+        font-size: 28px;
     }
 
     .text {
-        font-size: 16px;
-    }
-
-    .button {
-        padding: 14px 32px;
-        font-size: 15px;
+        max-width: 100%;
     }
 }
 
 @media (max-width: 480px) {
-    .contactCta {
-        padding: 40px 0;
-    }
-
-    .title {
-        font-size: 22px;
-    }
-
-    .text {
-        font-size: 15px;
-        margin-bottom: 24px;
-    }
-
     .button {
         width: 100%;
+        text-align: center;
+        padding: 18px 24px;
     }
 }

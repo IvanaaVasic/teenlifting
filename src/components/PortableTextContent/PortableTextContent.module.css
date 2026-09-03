@@ -1,8 +1,14 @@
+/*
+ * Flex-wrap rather than a plain block flow: PortableText emits half/third
+ * images as flat siblings, and wrapping is what lets them share a row.
+ * Vertical rhythm therefore comes from each block's own margins, not row-gap.
+ */
 .content {
     display: flex;
     flex-wrap: wrap;
-    gap: 16px;
     align-items: flex-start;
+    column-gap: 20px;
+    row-gap: 0;
 }
 
 .content > * {
@@ -11,116 +17,149 @@
 
 /* Typography */
 .paragraph {
+    margin: 0 0 20px;
+    font-family: var(--font-ui);
     font-size: 17px;
     line-height: 1.8;
     color: var(--color-text);
-    margin: 0;
-}
-
-/* First paragraph as lead/intro */
-.content > .paragraph:first-child {
-    font-size: 19px;
-    color: var(--color-text-dark);
-    font-weight: 400;
+    text-wrap: pretty;
 }
 
 .heading2 {
-    font-size: 28px;
-    font-weight: 700;
+    margin: 48px 0 18px;
+    font-family: var(--font-display);
+    font-size: 34px;
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
     color: var(--color-text-dark);
-    margin: 16px 0 8px;
-    line-height: 1.3;
 }
 
 .heading3 {
-    font-size: 22px;
-    font-weight: 600;
+    margin: 36px 0 14px;
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: 0;
     color: var(--color-text-dark);
-    margin: 12px 0 6px;
-    line-height: 1.4;
 }
 
 .heading4 {
-    font-size: 18px;
+    margin: 32px 0 12px;
+    font-family: var(--font-ui);
+    font-size: 12px;
     font-weight: 600;
-    color: var(--color-text-dark);
-    margin: 8px 0 4px;
     line-height: 1.4;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--color-text-light);
+}
+
+/* The first block never carries its heading top margin. */
+.content > *:first-child {
+    margin-top: 0;
 }
 
 .blockquote {
-    margin: 24px 0;
-    padding: 28px 32px;
-    border-left: 4px solid var(--color-primary);
-    background: linear-gradient(
-        135deg,
-        rgba(0, 180, 165, 0.05) 0%,
-        rgba(76, 129, 193, 0.05) 100%
-    );
+    margin: 28px 0;
+    padding: 30px 34px;
+    background-color: var(--color-text-dark);
+    border-left: 3px solid var(--color-primary);
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 300;
     font-style: italic;
-    font-size: 18px;
-    line-height: 1.7;
-    color: var(--color-text);
-    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
-    position: relative;
+    line-height: 1.4;
+    color: var(--color-on-dark);
 }
 
-.blockquote::before {
-    content: '"';
-    position: absolute;
-    top: 12px;
-    left: 16px;
-    font-size: 48px;
-    font-family: Georgia, serif;
-    color: var(--color-primary);
-    opacity: 0.3;
-    line-height: 1;
+.blockquote .paragraph {
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    color: inherit;
+}
+
+/* Marks */
+.strong {
+    font-weight: 600;
+    color: var(--color-text-dark);
+}
+
+/* One step up in size — Newsreader's x-height runs smaller than Archivo's. */
+.em {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-style: italic;
+}
+
+.underline {
+    text-decoration: underline;
+    text-underline-offset: 3px;
 }
 
 .link {
-    color: var(--color-primary);
-    text-decoration: underline;
-    text-underline-offset: 2px;
-    transition: color var(--transition-fast);
+    color: var(--color-primary-hover);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 119, 108, 0.4);
+    transition: border-color var(--transition-fast);
 }
 
 .link:hover {
-    color: var(--color-primary-dark);
+    border-bottom-color: var(--color-primary-hover);
 }
 
-/* Lists */
+/* Lists — markers are drawn, not inherited from list-style */
 .bulletList,
 .numberList {
-    margin: 8px 0;
-    padding-left: 24px;
+    margin: 4px 0 24px;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.numberList {
+    counter-reset: pt-number;
+}
+
+.listItemBullet,
+.listItemNumber {
+    display: grid;
+    align-items: baseline;
     font-size: 17px;
-    line-height: 1.8;
+    line-height: 1.7;
     color: var(--color-text);
 }
 
-.bulletList {
-    list-style-type: disc;
-    columns: 2;
-    column-gap: 48px;
+.listItemBullet {
+    grid-template-columns: 22px 1fr;
+    gap: 10px;
 }
 
-.numberList {
-    list-style-type: decimal;
+.listItemBullet::before {
+    content: "-";
+    color: var(--color-primary);
 }
 
-.listItem {
-    margin-bottom: 8px;
-    padding-left: 8px;
-    break-inside: avoid;
+.listItemNumber {
+    grid-template-columns: 30px 1fr;
+    gap: 10px;
 }
 
-.listItem:last-child {
-    margin-bottom: 0;
+.listItemNumber::before {
+    counter-increment: pt-number;
+    content: counter(pt-number) ".";
+    font-family: var(--font-display);
+    color: var(--color-primary-hover);
 }
 
 /* Images */
 .figure {
-    margin: 0;
+    margin: 8px 0 28px;
 }
 
 .imageFull {
@@ -128,19 +167,17 @@
 }
 
 .imageHalf {
-    width: calc(50% - 8px);
+    width: calc(50% - 10px);
 }
 
 .imageThird {
-    width: calc(33.333% - 11px);
+    width: calc(33.333% - 13.34px);
 }
 
 .imageWrapper {
     position: relative;
     aspect-ratio: 4/3;
-    border-radius: var(--radius-lg);
     overflow: hidden;
-    box-shadow: var(--shadow-md);
 }
 
 .imageFull .imageWrapper {
@@ -153,41 +190,38 @@
 }
 
 .figure:hover .image {
-    transform: scale(1.02);
+    transform: scale(1.03);
 }
 
 .caption {
-    text-align: center;
-    font-size: 14px;
-    color: var(--color-text-light);
     margin-top: 12px;
-    font-style: italic;
+    font-size: 13px;
+    line-height: 1.5;
+    letter-spacing: 0.04em;
+    color: var(--color-text-light);
 }
 
-/* CTA Buttons */
+/* CTA buttons */
 .ctaWrapper {
     display: flex;
-    justify-content: center;
-    margin: 16px 0;
+    margin: 8px 0 28px;
 }
 
 .cta {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 14px 32px;
-    font-size: 15px;
+    padding: 16px 26px;
+    font-family: var(--font-ui);
+    font-size: 12px;
     font-weight: 600;
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
     text-decoration: none;
-    border-radius: var(--radius-md);
     transition:
         background-color var(--transition-fast),
-        transform var(--transition-fast),
-        box-shadow var(--transition-fast);
-}
-
-.cta:hover {
-    transform: translateY(-2px);
+        color var(--transition-fast);
 }
 
 .ctaPrimary {
@@ -196,124 +230,101 @@
 }
 
 .ctaPrimary:hover {
-    background-color: var(--color-primary-dark);
+    background-color: var(--color-primary-hover);
 }
 
 .ctaSecondary {
-    background-color: var(--color-secondary);
-    color: #ffffff;
+    background-color: var(--color-text-dark);
+    color: var(--color-on-dark);
 }
 
 .ctaSecondary:hover {
-    background-color: #3a6ca8;
+    background-color: var(--color-primary-hover);
 }
 
 .ctaOutline {
     background-color: transparent;
-    color: var(--color-primary);
-    border: 2px solid var(--color-primary);
+    border: 1px solid var(--color-text-dark);
+    color: var(--color-text-dark);
 }
 
 .ctaOutline:hover {
-    background-color: var(--color-primary);
-    color: #ffffff;
+    border-color: var(--color-primary-hover);
+    color: var(--color-primary-hover);
 }
 
 /* Table */
 .tableWrapper {
-    margin: 28px 0;
+    margin: 12px 0 32px;
+    overflow-x: auto;
 }
 
 .tableTitle {
-    font-size: 19px;
+    margin: 0 0 12px;
+    font-family: var(--font-ui);
+    font-size: 12px;
     font-weight: 600;
-    color: var(--color-text-dark);
-    margin: 0 0 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--color-text-light);
 }
 
 .table {
     width: 100%;
+    min-width: 420px;
     border-collapse: collapse;
     font-size: 15px;
     line-height: 1.6;
-    table-layout: fixed;
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    border: 1px solid rgba(15, 23, 42, 0.08);
-    background-color: #ffffff;
 }
 
 .headerRow {
-    background-color: var(--color-secondary);
-    color: var(--color-background-alt);
+    border-bottom: 1px solid var(--color-text-dark);
 }
 
 .headerCell {
-    padding: 11px 18px;
-    text-align: left;
+    padding: 0 0 10px;
+    font-size: 11px;
     font-weight: 600;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    border-bottom: 1px solid rgba(15, 23, 42, 0.06);
-    letter-spacing: 0.02em;
     text-transform: uppercase;
-    font-size: 12px;
-}
-
-.dataRow {
-    border-bottom: 1px solid rgba(15, 23, 42, 0.04);
-    transition: background-color var(--transition-fast);
-}
-
-.dataRow:hover {
-    background-color: #f9fbff;
-}
-
-.dataRow:last-child {
-    border-bottom: none;
+    letter-spacing: 0.12em;
+    color: var(--color-text-light);
+    text-align: left;
 }
 
 .dataCell {
-    padding: 11px 18px;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--color-border);
     color: var(--color-text);
-    word-wrap: break-word;
-    overflow-wrap: break-word;
     vertical-align: middle;
 }
 
 .dataCell:first-child {
-    font-weight: 600;
     color: var(--color-text-dark);
 }
 
-/* Treat last column as price / value */
-.dataCell:last-child {
-    text-align: left;
-    white-space: pre-wrap;
+/* Last column reads as the price / value */
+.headerCell:not(:first-child):last-child,
+.dataCell:not(:first-child):last-child {
+    text-align: right;
+    white-space: nowrap;
 }
 
-.dataCell:last-child::before {
-    content: "";
-    display: inline-block;
-    width: 6px;
-    height: 6px;
-    border-radius: 999px;
-    background-color: var(--color-primary);
-    margin-right: 8px;
+.dataCell:not(:first-child):last-child {
+    font-weight: 500;
+    color: var(--color-text-dark);
 }
 
 /* Gallery */
 .gallery {
     display: grid;
     grid-template-columns: repeat(var(--gallery-columns, 2), 1fr);
-    gap: 16px;
-    margin: 16px 0;
+    gap: 14px;
+    margin: 8px 0 28px;
 }
 
 .galleryItem {
     position: relative;
     aspect-ratio: 4/3;
-    border-radius: var(--radius-md);
     overflow: hidden;
 }
 
@@ -328,11 +339,13 @@
 /* Responsive */
 @media (max-width: 1024px) {
     .heading2 {
-        font-size: 24px;
+        font-size: 30px;
+        margin-top: 40px;
     }
 
     .heading3 {
-        font-size: 20px;
+        font-size: 22px;
+        margin-top: 30px;
     }
 }
 
@@ -342,32 +355,21 @@
     }
 
     .heading2 {
-        font-size: 22px;
+        font-size: 26px;
     }
 
     .heading3 {
-        font-size: 18px;
+        font-size: 20px;
     }
 
     .blockquote {
+        font-size: 20px;
+        padding: 24px 24px;
+    }
+
+    .listItemBullet,
+    .listItemNumber {
         font-size: 16px;
-        padding: 24px 24px 24px 28px;
-    }
-
-    .blockquote::before {
-        font-size: 36px;
-        top: 8px;
-        left: 12px;
-    }
-
-    .bulletList,
-    .numberList {
-        font-size: 16px;
-        padding-left: 20px;
-    }
-
-    .bulletList {
-        columns: 1;
     }
 
     .imageHalf,
@@ -382,47 +384,23 @@
 }
 
 @media (max-width: 480px) {
-    .paragraph {
-        font-size: 15px;
-    }
-
     .heading2 {
-        font-size: 20px;
+        font-size: 24px;
     }
 
     .heading3 {
-        font-size: 17px;
+        font-size: 19px;
     }
 
-    .bulletList,
-    .numberList {
-        font-size: 15px;
-    }
-
-    .ctaWrapper {
-        margin: 12px 0;
+    .blockquote {
+        font-size: 18px;
     }
 
     .cta {
         width: 100%;
-        padding: 14px 24px;
     }
 
     .gallery {
         grid-template-columns: 1fr;
-    }
-
-    .table {
-        font-size: 13px;
-        line-height: 1.5;
-    }
-
-    .headerCell,
-    .dataCell {
-        padding: 10px 12px;
-    }
-
-    .headerCell {
-        font-size: 12px;
     }
 }

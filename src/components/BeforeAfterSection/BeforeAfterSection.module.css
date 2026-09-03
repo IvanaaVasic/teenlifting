@@ -1,0 +1,181 @@
+.section {
+    padding: 96px var(--page-padding);
+    background-color: var(--color-background-alt);
+    border-top: 1px solid var(--color-border);
+}
+
+.header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 34px;
+}
+
+.title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 44px;
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--color-text-dark);
+}
+
+.label {
+    margin: 0;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.4;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--color-text-light);
+    text-align: right;
+}
+
+/* Grid */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.pair {
+    margin: 0;
+    position: relative;
+}
+
+/*
+ * Two halves side by side with a hairline in the paper colour between them —
+ * that seam is what reads as the before/after split.
+ */
+.halves {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    aspect-ratio: 4/5;
+    background-color: var(--color-background);
+    overflow: hidden;
+}
+
+.half {
+    position: relative;
+    overflow: hidden;
+}
+
+.image {
+    object-fit: cover;
+}
+
+/* Placeholder for pairs whose photos are not in yet */
+.placeholder {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 14px;
+    background-color: #e9e0d8;
+    background-image: repeating-linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.55) 0,
+        rgba(255, 255, 255, 0.55) 8px,
+        transparent 8px,
+        transparent 16px
+    );
+}
+
+.placeholderLabel {
+    font-family: ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--color-text-light);
+}
+
+/* Caption sits over the bottom-left of the pair, as in the design */
+.caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 18px 20px;
+    background: linear-gradient(
+        to top,
+        rgba(23, 32, 31, 0.55),
+        rgba(23, 32, 31, 0)
+    );
+}
+
+.captionLabel {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--color-on-dark);
+}
+
+.captionText {
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: rgba(244, 241, 236, 0.8);
+}
+
+.note {
+    margin: 22px 0 0;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--color-text-light);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .section {
+        padding: 72px var(--page-padding);
+    }
+
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .title {
+        font-size: 36px;
+    }
+}
+
+@media (max-width: 768px) {
+    .section {
+        padding: 56px 16px;
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .label {
+        text-align: left;
+    }
+
+    .title {
+        font-size: 30px;
+    }
+
+    .captionLabel {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .title {
+        font-size: 26px;
+    }
+}

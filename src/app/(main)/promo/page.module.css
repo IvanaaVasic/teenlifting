@@ -101,7 +101,7 @@
     background: linear-gradient(
         90deg,
         var(--color-primary),
-        var(--color-secondary)
+        var(--color-primary-hover)
     );
     margin: 16px auto 0;
     border-radius: 2px;

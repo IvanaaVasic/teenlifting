@@ -3,9 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { PortableText, PortableTextComponents } from "@portabletext/react";
+import { normalizeHref } from "@/utils/href";
 import styles from "./PortableTextContent.module.css";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const portableTextComponents: PortableTextComponents = {
     types: {
         image: ({ value }) => {
@@ -59,7 +59,7 @@ export const portableTextComponents: PortableTextComponents = {
             return (
                 <div className={styles.ctaWrapper}>
                     <Link
-                        href={value.href}
+                        href={normalizeHref(value.href)}
                         className={`${styles.cta} ${styleClass}`}
                     >
                         {value.label}
@@ -123,7 +123,7 @@ export const portableTextComponents: PortableTextComponents = {
                                         className={
                                             row.isHeader
                                                 ? styles.headerRow
-                                                : styles.dataRow
+                                                : undefined
                                         }
                                     >
                                         {row.cells?.map(
@@ -177,14 +177,27 @@ export const portableTextComponents: PortableTextComponents = {
         ),
     },
     listItem: {
+        // Separate classes: the bullet marker is an em dash, the number marker
+        // is a CSS counter, and each needs its own grid column width.
         bullet: ({ children }) => (
-            <li className={styles.listItem}>{children}</li>
+            <li className={styles.listItemBullet}>
+                <span>{children}</span>
+            </li>
         ),
         number: ({ children }) => (
-            <li className={styles.listItem}>{children}</li>
+            <li className={styles.listItemNumber}>
+                <span>{children}</span>
+            </li>
         ),
     },
     marks: {
+        strong: ({ children }) => (
+            <strong className={styles.strong}>{children}</strong>
+        ),
+        em: ({ children }) => <em className={styles.em}>{children}</em>,
+        underline: ({ children }) => (
+            <span className={styles.underline}>{children}</span>
+        ),
         link: ({ children, value }) => (
             <a
                 href={value?.href}

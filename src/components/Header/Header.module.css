@@ -3,17 +3,26 @@
     top: 0;
     z-index: 200;
     background-color: var(--color-background);
-    box-shadow: var(--shadow-sm);
+    border-bottom: 1px solid var(--color-border);
+    /*
+     * Clips the closed off-canvas panel parked to the right of the viewport so
+     * it can't widen the document. `clip` rather than `hidden` on purpose:
+     * it leaves overflow-y visible, so the dropdown menus still hang below.
+     */
+    overflow-x: clip;
 }
 
 .container {
+    position: relative;
+    z-index: 206;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 24px;
     max-width: var(--container-max-width);
     margin: 0 auto;
-    padding: 0 24px;
-    height: var(--header-height);
+    padding: 22px var(--page-padding);
+    background-color: var(--color-background);
 }
 
 /* Logo */
@@ -25,47 +34,62 @@
 }
 
 .logoImage {
-    height: 43px;
+    height: 30px;
     width: auto;
     object-fit: contain;
 }
 
 .logoText {
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--color-text-dark);
-    letter-spacing: -0.5px;
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 400;
+    color: var(--color-primary);
+    letter-spacing: -0.01em;
 }
 
 /* Desktop Navigation */
 .desktopNav {
     display: flex;
     align-items: center;
-    gap: 4px;
-    margin-left: auto;
+    gap: 26px;
 }
 
 .navItem {
     position: relative;
 }
 
-.navLink {
+.navLink,
+.dropdownTrigger {
     display: inline-flex;
     align-items: center;
-    padding: 10px 16px;
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--color-text);
+    gap: 5px;
+    padding: 0 0 2px;
+    border: none;
+    border-bottom: 1px solid transparent;
+    background: none;
+    font-family: var(--font-ui);
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    line-height: 1.2;
+    color: #3c3733;
     text-decoration: none;
-    border-radius: var(--radius-md);
+    white-space: nowrap;
+    cursor: pointer;
     transition:
-        background-color var(--transition-fast),
-        color var(--transition-fast);
+        color var(--transition-fast),
+        border-color var(--transition-fast);
 }
 
-.navLink:hover {
-    background-color: var(--color-background-alt);
-    color: var(--color-primary);
+.navLink:hover,
+.dropdownTrigger:hover {
+    color: var(--color-primary-hover);
+}
+
+.navLinkActive {
+    color: var(--color-primary-hover);
+    border-bottom-color: var(--color-primary-hover);
 }
 
 /* Dropdown */
@@ -73,32 +97,9 @@
     position: relative;
 }
 
-.dropdownTrigger {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 10px 16px;
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--color-text);
-    background: none;
-    border: none;
-    border-radius: var(--radius-md);
-    cursor: pointer;
-    font-family: var(--font-family);
-    transition:
-        background-color var(--transition-fast),
-        color var(--transition-fast);
-}
-
-.dropdownTrigger:hover {
-    background-color: var(--color-background-alt);
-    color: var(--color-primary);
-}
-
 .chevron {
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
     transition: transform var(--transition-fast);
 }
 
@@ -110,11 +111,12 @@
     position: absolute;
     top: 100%;
     left: 0;
-    min-width: 220px;
-    padding: 8px 0;
+    min-width: 232px;
+    margin-top: 12px;
+    padding: 6px 0;
     background-color: var(--color-background);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--color-border);
+    border-top: 2px solid var(--color-primary);
     z-index: 210;
     opacity: 0;
     visibility: hidden;
@@ -128,14 +130,14 @@
 .dropdownOpen {
     opacity: 1;
     visibility: visible;
-    transform: translateY(4px);
+    transform: translateY(0);
 }
 
 .dropdownLink {
     display: block;
-    padding: 10px 16px;
+    padding: 11px 18px;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 400;
     color: var(--color-text);
     text-decoration: none;
     transition:
@@ -145,7 +147,27 @@
 
 .dropdownLink:hover {
     background-color: var(--color-background-alt);
-    color: var(--color-primary);
+    color: var(--color-primary-hover);
+}
+
+/* Desktop CTA */
+.cta {
+    flex-shrink: 0;
+    padding: 13px 22px;
+    background-color: var(--color-primary);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    line-height: 1;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color var(--transition-fast);
+}
+
+.cta:hover {
+    background-color: var(--color-primary-hover);
 }
 
 /* Mobile Menu Button */
@@ -155,30 +177,35 @@
     justify-content: center;
     width: 44px;
     height: 44px;
+    margin-right: -10px;
     padding: 0;
     background: none;
     border: none;
-    color: var(--color-text);
+    color: var(--color-text-dark);
     cursor: pointer;
-    border-radius: var(--radius-lg);
-    transition: background-color var(--transition-fast);
+    transition: color var(--transition-fast);
 }
 
 .mobileMenuBtn:hover {
-    background-color: var(--color-background-alt);
+    color: var(--color-primary-hover);
 }
 
-/* Mobile Navigation */
+/*
+ * Mobile Navigation.
+ * Anchored to the header's bottom edge (top: 100%) instead of a hardcoded
+ * viewport offset, so the sticky header and the utility bar above it can't
+ * knock the panel out of alignment.
+ */
 .mobileNav {
-    position: fixed;
-    top: var(--header-height);
+    position: absolute;
+    top: 100%;
     right: 0;
     width: 100%;
     max-width: 320px;
-    height: calc(100vh - var(--header-height));
+    height: calc(100vh - 100%);
     background-color: var(--color-background);
-    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
-    padding: 16px 0;
+    border-left: 1px solid var(--color-border);
+    padding: 8px 0 24px;
     overflow-y: auto;
     transform: translateX(100%);
     transition: transform var(--transition-slow);
@@ -193,49 +220,40 @@
     border-bottom: 1px solid var(--color-border);
 }
 
-.mobileNavItem:last-child {
-    border-bottom: none;
-}
-
-.mobileNavLink {
-    display: block;
-    padding: 16px 24px;
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--color-text);
+.mobileNavLink,
+.mobileDropdownTrigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 48px;
+    padding: 14px 24px;
+    background: none;
+    border: none;
+    font-family: var(--font-ui);
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #3c3733;
+    text-align: left;
     text-decoration: none;
+    cursor: pointer;
     transition:
         background-color var(--transition-fast),
         color var(--transition-fast);
 }
 
 .mobileNavLink:hover,
-.mobileNavLink:active {
-    background-color: var(--color-background-alt);
-    color: var(--color-primary);
-}
-
-.mobileDropdownTrigger {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    padding: 16px 24px;
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--color-text);
-    background: none;
-    border: none;
-    cursor: pointer;
-    text-align: left;
-    font-family: var(--font-family);
-    transition: background-color var(--transition-fast);
-}
-
+.mobileNavLink:active,
 .mobileDropdownTrigger:hover,
 .mobileDropdownTrigger:active {
     background-color: var(--color-background-alt);
-    color: var(--color-primary);
+    color: var(--color-primary-hover);
+}
+
+.mobileNavLinkActive {
+    color: var(--color-primary-hover);
 }
 
 .mobileDropdownMenu {
@@ -250,11 +268,13 @@
 }
 
 .mobileDropdownLink {
-    display: block;
-    padding: 12px 24px 12px 40px;
-    font-size: 15px;
-    font-weight: 500;
-    color: var(--color-text-light);
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 10px 24px 10px 38px;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--color-text-secondary);
     text-decoration: none;
     transition:
         background-color var(--transition-fast),
@@ -263,14 +283,37 @@
 
 .mobileDropdownLink:hover,
 .mobileDropdownLink:active {
-    background-color: var(--color-border);
-    color: var(--color-primary);
+    color: var(--color-primary-hover);
+}
+
+/* Mobile CTA */
+.mobileCtaWrapper {
+    padding: 24px;
+}
+
+.mobileCta {
+    display: block;
+    padding: 16px;
+    background-color: var(--color-primary);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    line-height: 1;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color var(--transition-fast);
+}
+
+.mobileCta:hover {
+    background-color: var(--color-primary-hover);
 }
 
 /* Overlay */
 .overlay {
     position: fixed;
-    top: var(--header-height);
+    top: 0;
     left: 0;
     right: 0;
     bottom: 0;
@@ -278,27 +321,47 @@
     z-index: 204;
 }
 
+/*
+ * The live nav carries eight items with long Serbian labels, several more
+ * than the prototype's six — tighten the rhythm before the mobile breakpoint
+ * rather than letting labels wrap.
+ */
+@media (max-width: 1420px) {
+    .desktopNav {
+        gap: 18px;
+    }
+
+    /*
+     * Gutter stays at --page-padding so the logo lines up with every section
+     * heading below it; only the nav rhythm tightens.
+     */
+    .container {
+        gap: 18px;
+    }
+}
+
+@media (max-width: 1220px) {
+    .desktopNav {
+        gap: 13px;
+    }
+
+    .navLink,
+    .dropdownTrigger {
+        letter-spacing: 0.05em;
+    }
+
+    .cta {
+        padding: 13px 16px;
+    }
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .container {
-        padding: 0 16px;
-        height: var(--header-height-mobile);
-    }
-
-    .logoImage {
-        height: 44px;
+        padding: 17px 16px;
     }
 
     .logoText {
-        font-size: 22px;
-    }
-
-    .mobileNav {
-        top: var(--header-height-mobile);
-        height: calc(100vh - var(--header-height-mobile));
-    }
-
-    .overlay {
-        top: var(--header-height-mobile);
+        font-size: 20px;
     }
 }

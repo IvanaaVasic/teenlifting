@@ -81,6 +81,15 @@ const siteSettings = {
         // Announcement Bar
         { name: "announcement", type: "announcement", group: "announcement" },
 
+        {
+            name: "headerCta",
+            title: "Header CTA",
+            description:
+                "Dugme u desnom uglu header-a. Npr. „Zakaži konsultaciju” → /kontakt.",
+            type: "cta",
+            group: "general",
+        },
+
         // Navigation
         {
             name: "mainNav",

@@ -36,7 +36,25 @@ Teenlifting — Next.js 15 (App Router) + Sanity CMS website for a beauty/wellne
 
 ## Content rule
 
-Use judgment. Static UI chrome (buttons, nav labels, form field labels) can be hardcoded in Serbian. Page content, headings, and CTAs should come from Sanity so the client can edit them. When in doubt, add a schema field.
+Never hardcode visible copy. Headings, section titles, CTA labels and body text come from Sanity so the client can edit them without a deploy — if no field exists, add one rather than putting the string in code. Prefer letting a section not render when its field is empty, over falling back to a string baked into the component.
+
+Text in a design file is an *illustration* of how existing CMS content would look, not a string to paste. The production text does not have to match the design; it has to come from the CMS.
+
+Only genuine static chrome may stay in code: form field labels, `aria-label`s, and small nav words like "Pogledaj sve".
+
+## Typography convention
+
+Use a plain hyphen `-` in UI text, never an em dash `—` or `&mdash;` — including where a design file shows one. Applies to eyebrow separators, list markers, name/role separators, and Sanity Studio field labels. Code comments are exempt.
+
+## Sanity is shared with production
+
+`main` and any feature branch read the same Sanity project (`wtkk9yjn`, dataset `production`), and every page is `force-dynamic`. So:
+
+- **Adding** a schema field is safe — other branches ignore it.
+- **Never remove** a schema type, field, or dependency; the live site may read it.
+- Editing an existing field's content appears on the live site immediately. Seed new fields only.
+
+The Sanity MCP connector is not authorized for this project. To write content, use a throwaway `.cjs` script with `getCliClient` from `sanity/cli` (CJS-only in Sanity 3.52) run via `npx sanity exec ./script.cjs --with-user-token`.
 
 ## Commit style
 

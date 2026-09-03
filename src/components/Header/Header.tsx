@@ -2,32 +2,24 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { HiOutlineMenuAlt3, HiX, HiChevronDown } from "react-icons/hi";
 import type { SiteSettings } from "@/sanity/sanity-utils";
 import { urlFromThumbnail } from "@/utils/image";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { normalizeHref } from "@/utils/href";
 import styles from "./Header.module.css";
 
 type HeaderProps = {
     settings: SiteSettings | null;
 };
 
-// Helper to normalize href - adds leading slash if missing and not external
-function normalizeHref(href: string | undefined): string {
-    if (!href) return "#";
-    // If it's an external URL or already starts with /, return as is
-    if (href.startsWith("http") || href.startsWith("/") || href.startsWith("#")) {
-        return href;
-    }
-    // Add leading slash for internal paths
-    return `/${href}`;
-}
-
 export function Header({ settings }: HeaderProps) {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [openDropdown, setOpenDropdown] = useState<string | null>(null);
     const isMobile = useMediaQuery(1024);
+    const pathname = usePathname();
 
     // Lock body scroll when mobile menu is open (must run before any early return)
     useEffect(() => {
@@ -44,8 +36,16 @@ export function Header({ settings }: HeaderProps) {
 
     if (!settings) return null;
 
-    const { logo, mainNav } = settings;
+    const { logo, mainNav, headerCta } = settings;
     const logoUrl = logo ? urlFromThumbnail(logo) : null;
+    const cta = headerCta?.label ? headerCta : null;
+
+    /*
+     * Pass the asset's real pixel dimensions so next/image knows the true
+     * aspect ratio; CSS then scales it to the 30px header height. Using made-up
+     * numbers here is what triggered the "width or height modified" warning.
+     */
+    const logoDims = logo?.asset?.metadata?.dimensions;
 
     const toggleMobileMenu = () => {
         setMobileMenuOpen(!mobileMenuOpen);
@@ -61,6 +61,20 @@ export function Header({ settings }: HeaderProps) {
         setOpenDropdown(null);
     };
 
+    // A nav item is active on its own route and on anything nested under it,
+    // so "Tretmani lica" stays marked while a subtype page is open.
+    const isActive = (href: string | undefined) => {
+        const target = normalizeHref(href);
+        if (!pathname || target === "/" || target.startsWith("http")) {
+            return pathname === target;
+        }
+        return pathname === target || pathname.startsWith(`${target}/`);
+    };
+
+    const isGroupActive = (item: (typeof mainNav)[number]) =>
+        isActive(item.href) ||
+        (item.children?.some((child) => isActive(child.href)) ?? false);
+
     return (
         <header className={styles.header}>
             <div className={styles.container}>
@@ -74,8 +88,8 @@ export function Header({ settings }: HeaderProps) {
                         <Image
                             src={logoUrl}
                             alt={settings.siteTitle || "Logo"}
-                            width={180}
-                            height={43}
+                            width={logoDims?.width ?? 521}
+                            height={logoDims?.height ?? 121}
                             className={styles.logoImage}
                             priority
                         />
@@ -94,7 +108,11 @@ export function Header({ settings }: HeaderProps) {
                                 {item.children && item.children.length > 0 ? (
                                     <div className={styles.dropdown}>
                                         <button
-                                            className={styles.dropdownTrigger}
+                                            className={`${styles.dropdownTrigger} ${
+                                                isGroupActive(item)
+                                                    ? styles.navLinkActive
+                                                    : ""
+                                            }`}
                                             onClick={() =>
                                                 toggleDropdown(item._key)
                                             }
@@ -153,7 +171,11 @@ export function Header({ settings }: HeaderProps) {
                                 ) : (
                                     <Link
                                         href={normalizeHref(item.href)}
-                                        className={styles.navLink}
+                                        className={`${styles.navLink} ${
+                                            isActive(item.href)
+                                                ? styles.navLinkActive
+                                                : ""
+                                        }`}
                                     >
                                         {item.label}
                                     </Link>
@@ -161,6 +183,16 @@ export function Header({ settings }: HeaderProps) {
                             </div>
                         ))}
                     </nav>
+                )}
+
+                {/* Desktop CTA */}
+                {!isMobile && cta && (
+                    <Link
+                        href={normalizeHref(cta.href)}
+                        className={styles.cta}
+                    >
+                        {cta.label}
+                    </Link>
                 )}
 
                 {/* Mobile Menu Button */}
@@ -191,7 +223,11 @@ export function Header({ settings }: HeaderProps) {
                             {item.children && item.children.length > 0 ? (
                                 <>
                                     <button
-                                        className={styles.mobileDropdownTrigger}
+                                        className={`${styles.mobileDropdownTrigger} ${
+                                            isGroupActive(item)
+                                                ? styles.mobileNavLinkActive
+                                                : ""
+                                        }`}
                                         onClick={() =>
                                             toggleDropdown(item._key)
                                         }
@@ -240,7 +276,11 @@ export function Header({ settings }: HeaderProps) {
                             ) : (
                                 <Link
                                     href={normalizeHref(item.href)}
-                                    className={styles.mobileNavLink}
+                                    className={`${styles.mobileNavLink} ${
+                                        isActive(item.href)
+                                            ? styles.mobileNavLinkActive
+                                            : ""
+                                    }`}
                                     onClick={closeMobileMenu}
                                 >
                                     {item.label}
@@ -248,6 +288,18 @@ export function Header({ settings }: HeaderProps) {
                             )}
                         </div>
                     ))}
+
+                    {cta && (
+                        <div className={styles.mobileCtaWrapper}>
+                            <Link
+                                href={normalizeHref(cta.href)}
+                                className={styles.mobileCta}
+                                onClick={closeMobileMenu}
+                            >
+                                {cta.label}
+                            </Link>
+                        </div>
+                    )}
                 </nav>
             )}
 

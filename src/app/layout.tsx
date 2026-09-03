@@ -1,12 +1,20 @@
 import type { Metadata, Viewport } from "next";
-import { Titillium_Web } from "next/font/google";
+import { Newsreader, Archivo } from "next/font/google";
 import { getSiteSettings } from "@/sanity/sanity-utils";
 import "./globals.css";
 
-const titillium = Titillium_Web({
+const newsreader = Newsreader({
     subsets: ["latin", "latin-ext"],
-    weight: ["300", "400", "600", "700"],
-    variable: "--font-titillium",
+    weight: ["300", "400", "500"],
+    style: ["normal", "italic"],
+    variable: "--font-newsreader",
+    display: "swap",
+});
+
+const archivo = Archivo({
+    subsets: ["latin", "latin-ext"],
+    weight: ["400", "500", "600"],
+    variable: "--font-archivo",
     display: "swap",
 });
 
@@ -96,7 +104,11 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="sr" className={titillium.variable} suppressHydrationWarning>
+        <html
+            lang="sr"
+            className={`${newsreader.variable} ${archivo.variable}`}
+            suppressHydrationWarning
+        >
             <body suppressHydrationWarning>{children}</body>
         </html>
     );

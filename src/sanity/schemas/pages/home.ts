@@ -28,6 +28,31 @@ const homePage = {
         // },
 
         {
+            name: "methodSection",
+            title: "Method section (Metoda)",
+            type: "object",
+            fields: [
+                {
+                    name: "eyebrow",
+                    title: "Eyebrow",
+                    description: "Npr. „01 - Metoda”.",
+                    type: "string",
+                },
+                { name: "title", title: "Title", type: "string" },
+                { name: "text", title: "Text", type: "text", rows: 4 },
+                {
+                    name: "chips",
+                    title: "Chips",
+                    description:
+                        "Red oznaka u okvirima. Npr. trening, lifting, pomlađivanje.",
+                    type: "array",
+                    of: [{ type: "string" }],
+                    options: { layout: "tags" },
+                },
+            ],
+        },
+
+        {
             name: "cardsSection",
             title: "Cards section (Tretmani)",
             type: "object",
@@ -44,10 +69,31 @@ const homePage = {
         },
 
         {
+            name: "beforeAfterSection",
+            title: "Before / after (Pre i posle)",
+            type: "beforeAfterSection",
+        },
+
+        {
+            name: "postsSection",
+            title: "Posts section (Novosti)",
+            type: "object",
+            fields: [{ name: "title", title: "Title", type: "string" }],
+        },
+
+        {
             name: "featuredPosts",
             title: "Featured blog posts",
+            description:
+                "Na Početnoj se prikazuju najviše tri; ostatak je na /blog.",
             type: "array",
             of: [{ type: "reference", to: [{ type: "post" }] }],
+        },
+
+        {
+            name: "contactCta",
+            title: "Contact CTA",
+            type: "contactCta",
         },
 
         {

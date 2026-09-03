@@ -28,9 +28,13 @@ const heroFragment = /* groq */ `
         slides[] {
             _key,
             image { ${imageFragment} },
+            eyebrow,
             title,
+            titleItalic,
             subtitle,
             cta { label, href },
+            secondaryCta { label, href },
+            stats[] { _key, value, label },
             overlay
         }
     }
@@ -93,12 +97,22 @@ export type CTA = {
     href: string;
 };
 
+export type HeroStat = {
+    _key: string;
+    value?: string;
+    label?: string;
+};
+
 export type HeroSlide = {
     _key: string;
     image: Image;
+    eyebrow?: string;
     title: string;
+    titleItalic?: string;
     subtitle: string;
     cta: CTA;
+    secondaryCta?: CTA;
+    stats?: HeroStat[];
     overlay: boolean;
 };
 
@@ -174,6 +188,7 @@ export type SiteSettings = {
     logo: Image;
     seo?: SiteSEO;
     announcement: Announcement;
+    headerCta?: CTA;
     mainNav: NavItem[];
     footer: {
         address: string;
@@ -184,6 +199,28 @@ export type SiteSettings = {
     socials: { _key: string; label: string; url: string }[];
 };
 
+export type MethodSection = {
+    eyebrow?: string;
+    title?: string;
+    text?: string;
+    chips?: string[];
+};
+
+export type BeforeAfterPair = {
+    _key: string;
+    label?: string;
+    caption?: string;
+    before?: Image;
+    after?: Image;
+};
+
+export type BeforeAfterSection = {
+    title?: string;
+    eyebrow?: string;
+    note?: string;
+    pairs?: BeforeAfterPair[];
+};
+
 export type HomePage = {
     hero: Hero;
     promo: {
@@ -191,6 +228,10 @@ export type HomePage = {
         link: string;
         active: boolean;
     };
+    methodSection?: MethodSection;
+    beforeAfterSection?: BeforeAfterSection;
+    postsSection?: { title?: string };
+    contactCta?: ContactCTAType;
     cardsSection: {
         title: string;
         intro: string;
@@ -239,6 +280,13 @@ export type PromotionPage = {
     hero?: Hero;
     sections: ContentSection[];
     contactCta?: ContactCTAType;
+};
+
+export type TreatmentLink = {
+    _id: string;
+    title: string;
+    slug: string;
+    category: "face" | "body" | "pelvic";
 };
 
 export type TreatmentPage = {
@@ -307,6 +355,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
                 backgroundColor,
                 textColor
             },
+            headerCta { label, href },
             mainNav[] {
                 _key,
                 label,
@@ -346,6 +395,12 @@ export async function getHomePage(): Promise<HomePage> {
                 link,
                 active
             },
+            methodSection {
+                eyebrow,
+                title,
+                text,
+                chips
+            },
             cardsSection {
                 title,
                 intro,
@@ -356,6 +411,27 @@ export async function getHomePage(): Promise<HomePage> {
                     image { ${imageFragment} },
                     link
                 }
+            },
+            beforeAfterSection {
+                title,
+                eyebrow,
+                note,
+                pairs[] {
+                    _key,
+                    label,
+                    caption,
+                    before { ${imageFragment} },
+                    after { ${imageFragment} }
+                }
+            },
+            postsSection {
+                title
+            },
+            contactCta {
+                title,
+                text,
+                buttonLabel,
+                buttonHref
             },
             "featuredPosts": featuredPosts[]-> {
                 _id,
@@ -486,6 +562,21 @@ export async function getTreatmentPage(slug: string): Promise<TreatmentPage> {
             }
         }`,
         { slug }
+    );
+}
+
+/**
+ * Slug + title + category only — for subtype chip rows and nav-like lists.
+ * Deliberately skips the hero fragment that getAllTreatments pulls in.
+ */
+export async function getTreatmentLinks(): Promise<TreatmentLink[]> {
+    return client.fetch(
+        groq`*[_type == "treatmentPage" && defined(slug.current)] | order(category asc, title asc) {
+            _id,
+            title,
+            "slug": slug.current,
+            category
+        }`
     );
 }
 
