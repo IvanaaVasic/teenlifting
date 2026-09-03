@@ -7,12 +7,16 @@ export interface TestimonialsSectionProps {
 }
 
 export function TestimonialsSection({ data }: TestimonialsSectionProps) {
-    if (!data?.testimonials?.length) {
+    // The section title doubles as the eyebrow above the quote.
+    const { title: eyebrow } = data ?? {};
+
+    // A testimonial with no quote, name or photo has nothing to show.
+    const testimonials = (data?.testimonials ?? []).filter(
+        (t) => t.text || t.name || t.image?.asset?.url
+    );
+    if (!testimonials.length) {
         return null;
     }
-
-    // The section title doubles as the eyebrow above the quote.
-    const { testimonials, title: eyebrow } = data;
 
     // First one carries the quote; the rest become the avatar row beneath it.
     const [featured, ...rest] = testimonials;
@@ -48,19 +52,25 @@ export function TestimonialsSection({ data }: TestimonialsSectionProps) {
                     </blockquote>
                 )}
 
-                <p className={styles.author}>
-                    <span className={styles.name}>{featured.name}</span>
-                    {featured.role && (
-                        <>
+                {(featured.name || featured.role) && (
+                    <p className={styles.author}>
+                        {featured.name && (
+                            <span className={styles.name}>
+                                {featured.name}
+                            </span>
+                        )}
+                        {featured.name && featured.role && (
                             <span className={styles.dash} aria-hidden="true">
                                 -
                             </span>
+                        )}
+                        {featured.role && (
                             <span className={styles.role}>
                                 {featured.role}
                             </span>
-                        </>
-                    )}
-                </p>
+                        )}
+                    </p>
+                )}
 
                 {names.length > 0 && (
                     <div className={styles.others}>

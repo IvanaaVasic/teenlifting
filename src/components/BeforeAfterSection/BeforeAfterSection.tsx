@@ -11,10 +11,24 @@ export interface BeforeAfterSectionProps {
     number?: string;
 }
 
+/** A pair with no label, caption or image is not worth a placeholder card. */
+function isFilledPair(pair: BeforeAfterSectionType["pairs"] extends
+    | (infer P)[]
+    | undefined
+    ? P
+    : never): boolean {
+    return Boolean(
+        pair.label ||
+            pair.caption ||
+            pair.before?.asset?.url ||
+            pair.after?.asset?.url
+    );
+}
+
 export function hasBeforeAfterSection(
     data?: BeforeAfterSectionType
 ): boolean {
-    return Boolean(data?.pairs?.length);
+    return Boolean(data?.pairs?.some(isFilledPair));
 }
 
 /**
@@ -63,16 +77,14 @@ export function BeforeAfterSection({
         return null;
     }
 
-    const pairs = data!.pairs!;
+    const pairs = data!.pairs!.filter(isFilledPair);
     const label = [number, data!.eyebrow].filter(Boolean).join(" - ");
 
     return (
         <section className={styles.section}>
-            {(data!.title || label) && (
+            {data!.title && (
                 <div className={styles.header}>
-                    {data!.title && (
-                        <h2 className={styles.title}>{data!.title}</h2>
-                    )}
+                    <h2 className={styles.title}>{data!.title}</h2>
                     {label && <p className={styles.label}>{label}</p>}
                 </div>
             )}

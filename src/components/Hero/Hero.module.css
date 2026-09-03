@@ -4,6 +4,11 @@
     background-color: var(--color-background);
 }
 
+/* With only copy or only imagery filled in, the half that exists takes over. */
+.single {
+    grid-template-columns: 1fr;
+}
+
 /* Left half — copy */
 .copy {
     display: flex;

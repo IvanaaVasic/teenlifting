@@ -42,22 +42,38 @@ export function ContactCTA({
         return null;
     }
 
+    /*
+     * The defaults only apply when showDefault is on. With it off, an empty
+     * field renders nothing rather than falling back to copy baked into the
+     * component — what is not filled in Sanity does not appear on the site.
+     */
+    const title = data?.title || (showDefault ? defaultTitle : undefined);
+    const text = data?.text || (showDefault ? defaultText : undefined);
+    const buttonLabel =
+        data?.buttonLabel || (showDefault ? defaultButtonLabel : undefined);
+    const buttonHref =
+        data?.buttonHref || (showDefault ? defaultButtonHref : undefined);
+
     return (
         <section
             className={`${styles.contactCta} ${
                 variant === "paper" ? styles.paper : ""
             }`}
         >
-            <div className={styles.copy}>
-                <h2 className={styles.title}>{data?.title || defaultTitle}</h2>
-                <p className={styles.text}>{data?.text || defaultText}</p>
-            </div>
-            <Link
-                href={normalizeHref(data?.buttonHref || defaultButtonHref)}
-                className={styles.button}
-            >
-                {data?.buttonLabel || defaultButtonLabel}
-            </Link>
+            {(title || text) && (
+                <div className={styles.copy}>
+                    {title && <h2 className={styles.title}>{title}</h2>}
+                    {text && <p className={styles.text}>{text}</p>}
+                </div>
+            )}
+            {buttonLabel && (
+                <Link
+                    href={normalizeHref(buttonHref)}
+                    className={styles.button}
+                >
+                    {buttonLabel}
+                </Link>
+            )}
         </section>
     );
 }

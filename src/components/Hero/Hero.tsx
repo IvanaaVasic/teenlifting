@@ -27,9 +27,26 @@ export function Hero({ hero }: HeroProps) {
         .filter((img) => img?.asset?.url);
     const hasSlider = images.length > 1;
     const stats = slide.stats?.filter((stat) => stat.value || stat.label) ?? [];
+    const hasActions = Boolean(slide.cta?.label || slide.secondaryCta?.label);
+
+    // An empty half would otherwise sit there as 50% of blank paper.
+    const hasCopy = Boolean(
+        slide.eyebrow ||
+            slide.title ||
+            slide.titleItalic ||
+            slide.subtitle ||
+            hasActions ||
+            stats.length
+    );
+    if (!hasCopy && !images.length) return null;
 
     return (
-        <section className={styles.hero}>
+        <section
+            className={`${styles.hero} ${
+                !hasCopy || !images.length ? styles.single : ""
+            }`}
+        >
+            {hasCopy && (
             <div className={styles.copy}>
                 {slide.eyebrow && (
                     <p className={styles.eyebrow}>{slide.eyebrow}</p>
@@ -78,18 +95,24 @@ export function Hero({ hero }: HeroProps) {
                     <dl className={styles.stats}>
                         {stats.map((stat) => (
                             <div key={stat._key} className={styles.stat}>
-                                <dt className={styles.statValue}>
-                                    {stat.value}
-                                </dt>
-                                <dd className={styles.statLabel}>
-                                    {stat.label}
-                                </dd>
+                                {stat.value && (
+                                    <dt className={styles.statValue}>
+                                        {stat.value}
+                                    </dt>
+                                )}
+                                {stat.label && (
+                                    <dd className={styles.statLabel}>
+                                        {stat.label}
+                                    </dd>
+                                )}
                             </div>
                         ))}
                     </dl>
                 )}
             </div>
+            )}
 
+            {images.length > 0 && (
             <div className={styles.media}>
                 {hasSlider ? (
                     <Swiper
@@ -153,6 +176,7 @@ export function Hero({ hero }: HeroProps) {
                     )
                 )}
             </div>
+            )}
         </section>
     );
 }

@@ -126,13 +126,17 @@ export function CardSection({
     treatments = [],
     withTopPadding = false,
 }: CardSectionProps) {
-    if (!cards?.length) {
+    // A card with nothing filled in is not a row worth drawing.
+    const filledCards = (cards ?? []).filter(
+        (card) => card.title || card.text || card.image?.asset?.url
+    );
+    if (!filledCards.length) {
         return null;
     }
 
     // The first card of each category leads it; the rest are its subtypes.
     const seenCategories = new Set<string>();
-    const categoryLead = cards.map((card) => {
+    const categoryLead = filledCards.map((card) => {
         const treatment = treatments.find(
             (t) => t.slug === slugFromHref(card.link)
         );
@@ -148,15 +152,16 @@ export function CardSection({
                 withTopPadding ? styles.withTopPadding : ""
             }`}
         >
-            {(title || number) && (
+            {/* The number is an annotation on a heading, never a heading itself. */}
+            {title && (
                 <div className={styles.header}>
-                    {title && <h2 className={styles.title}>{title}</h2>}
+                    <h2 className={styles.title}>{title}</h2>
                     {number && <p className={styles.label}>{number}</p>}
                 </div>
             )}
 
             <div className={styles.rows}>
-                {cards.map((card, index) => (
+                {filledCards.map((card, index) => (
                     <CardRow
                         key={card._key}
                         card={card}
