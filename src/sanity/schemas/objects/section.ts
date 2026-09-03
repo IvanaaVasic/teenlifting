@@ -191,6 +191,134 @@ const section = {
                         },
                     },
                 },
+                // Numbered steps
+                {
+                    type: "object",
+                    name: "numberedSteps",
+                    title: "Numerisani koraci",
+                    description:
+                        "Npr. Rezultati po treningu, ili Šta ponuda uključuje",
+                    fields: [
+                        {
+                            name: "title",
+                            title: "Naslov (opciono)",
+                            type: "string",
+                            description:
+                                "Ako je popunjen, ulazi u navigaciju „Na ovoj strani“",
+                        },
+                        {
+                            name: "steps",
+                            title: "Koraci",
+                            type: "array",
+                            of: [
+                                {
+                                    type: "object",
+                                    name: "step",
+                                    fields: [
+                                        {
+                                            name: "title",
+                                            title: "Naslov koraka",
+                                            type: "string",
+                                        },
+                                        {
+                                            name: "text",
+                                            title: "Tekst",
+                                            type: "text",
+                                            rows: 3,
+                                        },
+                                    ],
+                                    preview: {
+                                        select: {
+                                            title: "title",
+                                            subtitle: "text",
+                                        },
+                                    },
+                                },
+                            ],
+                        },
+                    ],
+                    preview: {
+                        select: { title: "title", steps: "steps" },
+                        prepare({
+                            title,
+                            steps,
+                        }: {
+                            title: string;
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                            steps: any[];
+                        }) {
+                            return {
+                                title:
+                                    title ||
+                                    `Koraci (${steps?.length || 0})`,
+                                subtitle: "Numerisani koraci",
+                            };
+                        },
+                    },
+                },
+                // FAQ accordion
+                {
+                    type: "object",
+                    name: "faqSection",
+                    title: "Česta pitanja (akordeon)",
+                    fields: [
+                        {
+                            name: "title",
+                            title: "Naslov (opciono)",
+                            type: "string",
+                            description:
+                                "Ako je popunjen, ulazi u navigaciju „Na ovoj strani“",
+                        },
+                        {
+                            name: "items",
+                            title: "Pitanja",
+                            type: "array",
+                            of: [
+                                {
+                                    type: "object",
+                                    name: "faqItem",
+                                    fields: [
+                                        {
+                                            name: "question",
+                                            title: "Pitanje",
+                                            type: "string",
+                                        },
+                                        {
+                                            name: "answer",
+                                            title: "Odgovor",
+                                            type: "text",
+                                            rows: 4,
+                                        },
+                                    ],
+                                    preview: {
+                                        select: {
+                                            title: "question",
+                                            subtitle: "answer",
+                                        },
+                                    },
+                                },
+                            ],
+                        },
+                    ],
+                    preview: {
+                        select: { title: "title", items: "items" },
+                        prepare({
+                            title,
+                            items,
+                        }: {
+                            title: string;
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                            items: any[];
+                        }) {
+                            return {
+                                title:
+                                    title ||
+                                    `Česta pitanja (${items?.length || 0})`,
+                                subtitle: "FAQ akordeon",
+                            };
+                        },
+                    },
+                },
                 // Image gallery
                 {
                     type: "object",

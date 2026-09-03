@@ -24,6 +24,52 @@ const treatmentPage = {
         { name: "hero", type: "hero" },
 
         {
+            name: "meta",
+            title: "Meta red",
+            type: "array",
+            description:
+                "Red ispod naslova strane - trajanje, prvi rezultat, za koga, invazivnost. Stavke bez vrednosti se ne prikazuju.",
+            of: [
+                {
+                    type: "object",
+                    name: "metaItem",
+                    title: "Stavka",
+                    fields: [
+                        {
+                            name: "label",
+                            title: "Oznaka",
+                            type: "string",
+                            description: "Npr: Trajanje",
+                        },
+                        {
+                            name: "value",
+                            title: "Vrednost",
+                            type: "string",
+                            description: "Npr: 60 min",
+                        },
+                    ],
+                    preview: {
+                        select: { title: "label", subtitle: "value" },
+                    },
+                },
+            ],
+            initialValue: [
+                { _type: "metaItem", _key: "duration", label: "Trajanje" },
+                {
+                    _type: "metaItem",
+                    _key: "firstResult",
+                    label: "Prvi rezultat",
+                },
+                { _type: "metaItem", _key: "forWhom", label: "Za koga" },
+                {
+                    _type: "metaItem",
+                    _key: "invasiveness",
+                    label: "Invazivnost",
+                },
+            ],
+        },
+
+        {
             name: "sections",
             type: "array",
             of: [{ type: "contentSection" }],

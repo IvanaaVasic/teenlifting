@@ -290,12 +290,19 @@ export type TreatmentLink = {
     category: "face" | "body" | "pelvic";
 };
 
+export type TreatmentMetaItem = {
+    _key: string;
+    label?: string;
+    value?: string;
+};
+
 export type TreatmentPage = {
     _id: string;
     title: string;
     slug: string;
     category: "face" | "body" | "pelvic";
     hero: Hero;
+    meta?: TreatmentMetaItem[];
     sections: ContentSection[];
     disclaimer?: {
         text?: string;
@@ -551,6 +558,11 @@ export async function getTreatmentPage(slug: string): Promise<TreatmentPage> {
             "slug": slug.current,
             category,
             ${heroFragment},
+            meta[] {
+                _key,
+                label,
+                value
+            },
             ${contentSectionFragment},
             disclaimer {
                 text,
