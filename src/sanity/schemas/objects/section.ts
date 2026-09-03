@@ -78,12 +78,14 @@ const section = {
                             name: "layout",
                             type: "string",
                             title: "Layout",
-                            description: "Izaberi širinu slike",
+                            description:
+                                "Izaberi širinu slike. „Pored teksta“ stavlja sliku u uzak stubac levo, a pasuse odmah ispod nje u kolonu desno - do prvog naslova ili sledećeg bloka.",
                             options: {
                                 list: [
                                     { title: "Full width (100%)", value: "full" },
                                     { title: "Split half (50%) - dve slike u redu", value: "half" },
                                     { title: "Split third (33%) - tri slike u redu", value: "third" },
+                                    { title: "Pored teksta - slika levo, pasusi desno", value: "aside" },
                                 ],
                                 layout: "radio",
                             },
@@ -315,6 +317,218 @@ const section = {
                                     title ||
                                     `Česta pitanja (${items?.length || 0})`,
                                 subtitle: "FAQ akordeon",
+                            };
+                        },
+                    },
+                },
+                // Card grid
+                {
+                    type: "object",
+                    name: "cardGrid",
+                    title: "Kartice u mreži",
+                    description:
+                        "Tri kartice sa oznakom i kratkim tekstom. Npr. Rezultati metode.",
+                    fields: [
+                        {
+                            name: "title",
+                            title: "Naslov (opciono)",
+                            type: "string",
+                            description:
+                                "Ako je popunjen, ulazi u navigaciju „Na ovoj strani“",
+                        },
+                        {
+                            name: "cards",
+                            title: "Kartice",
+                            type: "array",
+                            of: [
+                                {
+                                    type: "object",
+                                    name: "card",
+                                    fields: [
+                                        {
+                                            name: "title",
+                                            title: "Oznaka",
+                                            type: "string",
+                                        },
+                                        {
+                                            name: "text",
+                                            title: "Tekst",
+                                            type: "text",
+                                            rows: 3,
+                                        },
+                                    ],
+                                    preview: {
+                                        select: {
+                                            title: "title",
+                                            subtitle: "text",
+                                        },
+                                    },
+                                },
+                            ],
+                        },
+                    ],
+                    preview: {
+                        select: { title: "title", cards: "cards" },
+                        prepare({
+                            title,
+                            cards,
+                        }: {
+                            title: string;
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                            cards: any[];
+                        }) {
+                            return {
+                                title:
+                                    title || `Kartice (${cards?.length || 0})`,
+                                subtitle: "Kartice u mreži",
+                            };
+                        },
+                    },
+                },
+                // Two column blocks
+                {
+                    type: "object",
+                    name: "twoColumnBlocks",
+                    title: "Dva bloka jedan pored drugog",
+                    description: "Npr. Misija i Vizija.",
+                    fields: [
+                        {
+                            name: "title",
+                            title: "Naslov (opciono)",
+                            type: "string",
+                            description:
+                                "Ako je popunjen, ulazi u navigaciju „Na ovoj strani“",
+                        },
+                        {
+                            name: "blocks",
+                            title: "Blokovi",
+                            type: "array",
+                            of: [
+                                {
+                                    type: "object",
+                                    name: "columnBlock",
+                                    fields: [
+                                        {
+                                            name: "label",
+                                            title: "Oznaka",
+                                            type: "string",
+                                        },
+                                        {
+                                            name: "text",
+                                            title: "Tekst",
+                                            type: "text",
+                                            rows: 4,
+                                        },
+                                    ],
+                                    preview: {
+                                        select: {
+                                            title: "label",
+                                            subtitle: "text",
+                                        },
+                                    },
+                                },
+                            ],
+                        },
+                    ],
+                    preview: {
+                        select: { title: "title", blocks: "blocks" },
+                        prepare({
+                            title,
+                            blocks,
+                        }: {
+                            title: string;
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                            blocks: any[];
+                        }) {
+                            return {
+                                title:
+                                    title || `Blokovi (${blocks?.length || 0})`,
+                                subtitle: "Dva bloka jedan pored drugog",
+                            };
+                        },
+                    },
+                },
+                // Stat row
+                {
+                    type: "object",
+                    name: "statRow",
+                    title: "Red sa vrednostima",
+                    description:
+                        "Oznaka i tekst levo, niz vrednosti desno. Npr. Franšiza i gradovi.",
+                    fields: [
+                        {
+                            name: "label",
+                            title: "Oznaka",
+                            type: "string",
+                            description:
+                                "Ako je popunjena, ulazi u navigaciju „Na ovoj strani“",
+                        },
+                        {
+                            name: "text",
+                            title: "Tekst (opciono)",
+                            type: "text",
+                            rows: 2,
+                        },
+                        {
+                            name: "values",
+                            title: "Vrednosti",
+                            type: "array",
+                            of: [
+                                {
+                                    type: "object",
+                                    name: "statValue",
+                                    fields: [
+                                        {
+                                            name: "value",
+                                            title: "Vrednost",
+                                            type: "string",
+                                        },
+                                        {
+                                            name: "highlight",
+                                            title: "Istaknuto",
+                                            type: "boolean",
+                                            description:
+                                                "Prikazuje se u brend boji. Npr. grad u kom je centar.",
+                                            initialValue: false,
+                                        },
+                                    ],
+                                    preview: {
+                                        select: {
+                                            title: "value",
+                                            highlight: "highlight",
+                                        },
+                                        prepare({
+                                            title,
+                                            highlight,
+                                        }: {
+                                            title: string;
+                                            highlight: boolean;
+                                        }) {
+                                            return {
+                                                title: title || "Bez vrednosti",
+                                                subtitle: highlight
+                                                    ? "Istaknuto"
+                                                    : undefined,
+                                            };
+                                        },
+                                    },
+                                },
+                            ],
+                        },
+                    ],
+                    preview: {
+                        select: { title: "label", values: "values" },
+                        prepare({
+                            title,
+                            values,
+                        }: {
+                            title: string;
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                            values: any[];
+                        }) {
+                            return {
+                                title: title || "Red sa vrednostima",
+                                subtitle: `${values?.length || 0} vrednosti`,
                             };
                         },
                     },

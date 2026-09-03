@@ -13,10 +13,11 @@ export const portableTextComponents: PortableTextComponents = {
         image: ({ value }) => {
             if (!value?.asset?.url) return null;
             const layout = value.layout || "full";
+            // "aside" only reaches here when nothing followed it to pair with.
             const layoutClass =
                 layout === "half"
                     ? styles.imageHalf
-                    : layout === "third"
+                    : layout === "third" || layout === "aside"
                       ? styles.imageThird
                       : styles.imageFull;
 
@@ -47,6 +48,43 @@ export const portableTextComponents: PortableTextComponents = {
                         </figcaption>
                     )}
                 </figure>
+            );
+        },
+        imageAside: ({ value }) => {
+            const image = value?.image;
+            if (!image?.asset?.url) return null;
+
+            return (
+                <div className={styles.imageAside}>
+                    <figure className={styles.imageAsideFigure}>
+                        <div className={styles.imageAsideWrapper}>
+                            <Image
+                                src={image.asset.url}
+                                alt={image.alt || ""}
+                                fill
+                                className={styles.image}
+                                sizes="(max-width: 768px) 100vw, 280px"
+                                placeholder={
+                                    image.asset.metadata?.lqip
+                                        ? "blur"
+                                        : "empty"
+                                }
+                                blurDataURL={image.asset.metadata?.lqip}
+                            />
+                        </div>
+                        {image.caption && (
+                            <figcaption className={styles.caption}>
+                                {image.caption}
+                            </figcaption>
+                        )}
+                    </figure>
+                    <div className={styles.imageAsideText}>
+                        <PortableText
+                            value={value.blocks}
+                            components={portableTextComponents}
+                        />
+                    </div>
+                </div>
             );
         },
         ctaButton: ({ value }) => {
@@ -234,6 +272,142 @@ export const portableTextComponents: PortableTextComponents = {
         faqSection: ({ value }) => (
             <FaqAccordion title={value?.title} items={value?.items} />
         ),
+        cardGrid: ({ value }) => {
+            const cards = (value?.cards || []).filter(
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                (card: any) => card?.title || card?.text
+            );
+            if (!cards.length) return null;
+
+            return (
+                <div className={styles.cardGrid}>
+                    {value.title && (
+                        <h2
+                            id={slugify(value.title)}
+                            className={styles.heading2}
+                        >
+                            {value.title}
+                        </h2>
+                    )}
+                    <div className={styles.cardGridList}>
+                        {cards.map(
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                            (card: any, index: number) => (
+                                <div
+                                    key={card._key || index}
+                                    className={styles.card}
+                                >
+                                    {card.title && (
+                                        <h3 className={styles.cardTitle}>
+                                            {card.title}
+                                        </h3>
+                                    )}
+                                    {card.text && (
+                                        <p className={styles.cardText}>
+                                            {card.text}
+                                        </p>
+                                    )}
+                                </div>
+                            )
+                        )}
+                    </div>
+                </div>
+            );
+        },
+        twoColumnBlocks: ({ value }) => {
+            const blocks = (value?.blocks || []).filter(
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                (block: any) => block?.label || block?.text
+            );
+            if (!blocks.length) return null;
+
+            return (
+                <div className={styles.columnBlocks}>
+                    {value.title && (
+                        <h2
+                            id={slugify(value.title)}
+                            className={styles.heading2}
+                        >
+                            {value.title}
+                        </h2>
+                    )}
+                    <div className={styles.columnBlocksList}>
+                        {blocks.map(
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                            (block: any, index: number) => (
+                                <div
+                                    key={block._key || index}
+                                    className={styles.columnBlock}
+                                >
+                                    {block.label && (
+                                        <p
+                                            className={styles.columnBlockLabel}
+                                        >
+                                            {block.label}
+                                        </p>
+                                    )}
+                                    {block.text && (
+                                        <p className={styles.columnBlockText}>
+                                            {block.text}
+                                        </p>
+                                    )}
+                                </div>
+                            )
+                        )}
+                    </div>
+                </div>
+            );
+        },
+        statRow: ({ value }) => {
+            const values = (value?.values || []).filter(
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                (item: any) => item?.value
+            );
+            if (!value?.label && !value?.text && !values.length) return null;
+
+            // The label doubles as the anchor, so the row can be a stop in the
+            // "Na ovoj strani" list without carrying a heading of its own.
+            return (
+                <div
+                    id={value.label ? slugify(value.label) : undefined}
+                    className={styles.statRow}
+                >
+                    {(value.label || value.text) && (
+                        <div>
+                            {value.label && (
+                                <p className={styles.statRowLabel}>
+                                    {value.label}
+                                </p>
+                            )}
+                            {value.text && (
+                                <p className={styles.statRowText}>
+                                    {value.text}
+                                </p>
+                            )}
+                        </div>
+                    )}
+                    {values.length > 0 && (
+                        <ul className={styles.statRowValues}>
+                            {values.map(
+                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                (item: any, index: number) => (
+                                    <li
+                                        key={item._key || index}
+                                        className={`${styles.statRowValue} ${
+                                            item.highlight
+                                                ? styles.statRowValueActive
+                                                : ""
+                                        }`}
+                                    >
+                                        {item.value}
+                                    </li>
+                                )
+                            )}
+                        </ul>
+                    )}
+                </div>
+            );
+        },
     },
     block: {
         // The id lets the sticky "Na ovoj strani" list scroll here; it is
@@ -302,6 +476,62 @@ export const portableTextComponents: PortableTextComponents = {
     },
 };
 
+/**
+ * PortableText hands the renderer a flat list, so an image and the paragraphs
+ * that follow it are siblings and cannot share a row. An image marked
+ * `layout: "aside"` is folded here into a single block together with its run of
+ * paragraphs, which the `imageAside` renderer then lays out as two columns.
+ *
+ * The run ends at the first block that is not a plain paragraph - a heading, a
+ * quote, a list, another image - or at a blank line, the gesture editors
+ * already use to end a passage.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function groupAsideImages(value: any[]): any[] {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const isPlainParagraph = (block: any) =>
+        block?._type === "block" &&
+        (!block.style || block.style === "normal") &&
+        !block.listItem &&
+        blockText(block) !== "";
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const grouped: any[] = [];
+
+    for (let i = 0; i < value.length; i++) {
+        const node = value[i];
+
+        if (node?._type !== "image" || node.layout !== "aside") {
+            grouped.push(node);
+            continue;
+        }
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const blocks: any[] = [];
+        let next = i + 1;
+        while (next < value.length && isPlainParagraph(value[next])) {
+            blocks.push(value[next]);
+            next += 1;
+        }
+
+        // Nothing to stand beside - leave the image to the normal renderer.
+        if (!blocks.length) {
+            grouped.push(node);
+            continue;
+        }
+
+        grouped.push({
+            _type: "imageAside",
+            _key: `aside-${node._key || i}`,
+            image: node,
+            blocks,
+        });
+        i = next - 1;
+    }
+
+    return grouped;
+}
+
 interface PortableTextContentProps {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     value: any[];
@@ -316,7 +546,10 @@ export function PortableTextContent({
 
     return (
         <div className={`${styles.content} ${className || ""}`}>
-            <PortableText value={value} components={portableTextComponents} />
+            <PortableText
+                value={groupAsideImages(value)}
+                components={portableTextComponents}
+            />
         </div>
     );
 }

@@ -50,7 +50,8 @@ export type TocEntry = {
 
 /**
  * Collects the in-page navigation entries from content sections: h2 headings,
- * plus the FAQ and numbered-step blocks that were given a title.
+ * plus the structured blocks that were given a title of their own - FAQ,
+ * numbered steps, card grid, two column blocks - and a stat row's label.
  */
 export function extractToc(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -73,10 +74,15 @@ export function extractToc(
                 push(blockAnchorId(block), blockText(block));
             } else if (
                 (block?._type === "faqSection" ||
-                    block?._type === "numberedSteps") &&
+                    block?._type === "numberedSteps" ||
+                    block?._type === "cardGrid" ||
+                    block?._type === "twoColumnBlocks") &&
                 block.title
             ) {
                 push(slugify(block.title), block.title);
+            } else if (block?._type === "statRow" && block.label) {
+                // A stat row carries no heading, so its label is the stop.
+                push(slugify(block.label), block.label);
             }
         }
     }
