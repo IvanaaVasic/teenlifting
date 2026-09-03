@@ -15,6 +15,7 @@ export {
     PortableTextContent,
     portableTextComponents,
 } from "./PortableTextContent";
+export { PageToc } from "./PageToc";
 export { ContactForm } from "./ContactForm";
 export { ContactCTA } from "./ContactCTA";
 export type { ContactCTAData } from "./ContactCTA";
