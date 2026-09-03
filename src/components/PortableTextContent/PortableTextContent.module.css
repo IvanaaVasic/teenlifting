@@ -1,18 +1,21 @@
 /*
- * Flex-wrap rather than a plain block flow: PortableText emits half/third
- * images as flat siblings, and wrapping is what lets them share a row.
- * Vertical rhythm therefore comes from each block's own margins, not row-gap.
+ * A six column grid rather than a plain block flow: PortableText emits
+ * half/third images as flat siblings, and the spans are what let them share a
+ * row. Flex-wrap did the same until a block narrower than the column - the
+ * 720px measure on prose - left room for the next image to ride up beside it.
+ * Vertical rhythm comes from each block's own margins, not row-gap.
  */
 .content {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    align-items: start;
     column-gap: 20px;
     row-gap: 0;
 }
 
 .content > * {
-    width: 100%;
+    grid-column: span 6;
+    min-width: 0;
 }
 
 /* Typography */
@@ -162,16 +165,12 @@
     margin: 8px 0 28px;
 }
 
-.imageFull {
-    width: 100%;
-}
-
 .imageHalf {
-    width: calc(50% - 10px);
+    grid-column: span 3;
 }
 
 .imageThird {
-    width: calc(33.333% - 13.34px);
+    grid-column: span 2;
 }
 
 .imageWrapper {
@@ -510,7 +509,7 @@
 
     .imageHalf,
     .imageThird {
-        width: 100%;
+        grid-column: span 6;
     }
 
     .gallery {
