@@ -292,6 +292,10 @@ export type PricePage = {
 
 export type BlogPage = {
     hero?: Hero;
+    /** Badge beside the date on the newest post at the top of the listing. */
+    featuredLabel?: string;
+    /** Heading of the three related posts under an article. */
+    relatedTitle?: string;
 };
 
 export type PromotionOffer = {
@@ -571,7 +575,9 @@ export async function getPricePage(): Promise<PricePage> {
 export async function getBlogPage(): Promise<BlogPage | null> {
     return client.fetch(
         groq`*[_type == "blogPage"][0] {
-            ${heroFragment}
+            ${heroFragment},
+            featuredLabel,
+            relatedTitle
         }`
     );
 }
@@ -757,7 +763,24 @@ export async function getRecentBlogPosts(
             },
             publishedAt
         }`,
-        { limit: limit - 1 }
+        { limit }
+    );
+}
+
+// Related Blog Posts ("Povezane novosti" under an article)
+export async function getRelatedBlogPosts(
+    currentId: string,
+    limit: number = 3
+): Promise<BlogPost[]> {
+    return client.fetch(
+        groq`*[_type == "post" && _id != $currentId] | order(publishedAt desc)[0...$limit] {
+            _id,
+            title,
+            "slug": slug.current,
+            mainImage { ${imageFragment} },
+            publishedAt
+        }`,
+        { currentId, limit }
     );
 }
 

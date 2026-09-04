@@ -89,3 +89,39 @@ export function extractToc(
 
     return entries;
 }
+
+/**
+ * Headings a blog post can carry. `post.content` is a plain `{ type: "block" }`
+ * so the editor gets Sanity's default style list, and the posts use whichever
+ * level they were written at - h1 and h3 in one, h4 for the section headings of
+ * another. The list is flat, so it takes all four rather than h2 alone.
+ */
+const POST_HEADING_STYLES = ["h1", "h2", "h3", "h4"];
+
+/**
+ * The same list for a blog post, whose `content` is one flat array instead of
+ * a list of sections.
+ */
+export function extractPostToc(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    content: any[] | undefined
+): TocEntry[] {
+    if (!content?.length) return [];
+
+    const entries: TocEntry[] = [];
+    const seen = new Set<string>();
+
+    for (const block of content) {
+        if (block?._type !== "block") continue;
+        if (!POST_HEADING_STYLES.includes(block.style)) continue;
+
+        const id = blockAnchorId(block);
+        const label = blockText(block);
+        if (!id || !label || seen.has(id)) continue;
+
+        seen.add(id);
+        entries.push({ id, label });
+    }
+
+    return entries;
+}

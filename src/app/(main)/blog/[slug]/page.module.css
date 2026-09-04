@@ -1,29 +1,14 @@
-.article {
-    background-color: var(--color-background);
-}
-
-.container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 0 24px;
-}
-
+/* ============================================
+   Hero - full bleed photograph, copy in the bottom left
+   ============================================ */
 .hero {
     position: relative;
-    min-height: 520px;
-    display: flex;
-    align-items: flex-end;
-    color: #ffffff;
+    height: 520px;
     overflow: hidden;
     background-color: var(--color-text-dark);
 }
 
 .heroImage {
-    position: absolute;
-    inset: 0;
-}
-
-.heroImg {
     object-fit: cover;
 }
 
@@ -32,53 +17,93 @@
     inset: 0;
     background: linear-gradient(
         to bottom,
-        rgba(0, 0, 0, 0.25) 0%,
-        rgba(0, 0, 0, 0.65) 100%
+        rgba(23, 32, 31, 0.15) 0%,
+        rgba(23, 32, 31, 0.8) 100%
     );
 }
 
+/*
+ * Full width so the gutter can sit in its padding; the measure is set on the
+ * children instead, which is what keeps the title off the right edge.
+ */
 .heroContent {
     position: relative;
-    z-index: 2;
-    width: 100%;
-    padding: 80px 0 56px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 100%;
+    padding: 0 var(--page-gutter) 52px;
+    color: #f4f1ec;
 }
 
-.date {
-    display: inline-block;
-    font-size: 13px;
+.heroDate {
+    font-size: 11px;
     font-weight: 600;
+    line-height: normal;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: rgba(255, 255, 255, 0.85);
-    margin-bottom: 12px;
+    letter-spacing: 0.14em;
+    color: rgba(244, 241, 236, 0.7);
 }
 
-.title {
-    margin: 0 0 14px;
-    font-size: 44px;
-    font-weight: 800;
-    line-height: 1.1;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
-}
-
-.excerpt {
-    margin: 0;
-    font-size: 18px;
-    line-height: 1.7;
-    color: rgba(255, 255, 255, 0.9);
+.heroTitle {
+    margin: 18px 0 0;
     max-width: 780px;
+    font-family: var(--font-display);
+    font-size: 62px;
+    font-weight: 300;
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+    color: inherit;
 }
 
+.heroExcerpt {
+    margin: 18px 0 0;
+    max-width: 640px;
+    font-size: 19px;
+    line-height: 1.7;
+    color: rgba(244, 241, 236, 0.88);
+    text-wrap: pretty;
+}
+
+/* ============================================
+   Body - a 760px measure beside the sticky contents list
+   ---
+   The pair is centred rather than left aligned, so the text column keeps its
+   place when the list is short.
+   ============================================ */
 .body {
-    padding: 56px 0 90px;
+    display: grid;
+    grid-template-columns: 200px 760px;
+    gap: 64px;
+    align-items: start;
+    justify-content: center;
+    padding: 72px var(--page-gutter) 80px;
 }
 
+/* A post with no headings has nothing to list, so the measure stands alone. */
+.bodyNoToc {
+    padding: 72px var(--page-gutter) 80px;
+}
+
+.bodyNoToc .main {
+    max-width: 760px;
+    margin: 0 auto;
+}
+
+.main {
+    min-width: 0;
+}
+
+/* ============================================
+   Gallery - `post.gallery`, which unlike an inline image carries a caption
+   ============================================ */
 .gallery {
-    margin-top: 48px;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-top: 56px;
+    padding-top: 28px;
+    border-top: 1px solid var(--color-text-dark);
 }
 
 .galleryItem {
@@ -87,81 +112,189 @@
 
 .galleryImage {
     position: relative;
-    aspect-ratio: 4 / 3;
-    border-radius: var(--radius-lg);
+    height: 240px;
     overflow: hidden;
     background-color: var(--color-background-alt);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
 }
 
 .galleryImg {
     object-fit: cover;
-    transition: transform var(--transition-slow);
-}
-
-.galleryImage:hover .galleryImg {
-    transform: scale(1.02);
 }
 
 .galleryCaption {
-    margin-top: 10px;
+    margin-top: 12px;
     font-size: 13px;
+    line-height: 1.5;
+    letter-spacing: 0.04em;
     color: var(--color-text-light);
-    font-style: italic;
-    text-align: center;
 }
 
+/* ============================================
+   Related posts
+   ============================================ */
+.related {
+    padding: 64px var(--page-gutter);
+    background-color: var(--color-background-alt);
+    border-top: 1px solid var(--color-border);
+}
+
+.relatedHeader {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 24px;
+    padding-bottom: 20px;
+    margin-bottom: 28px;
+    border-bottom: 1px solid var(--color-text-dark);
+}
+
+.relatedTitle {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 300;
+    line-height: 1.2;
+    letter-spacing: normal;
+    color: var(--color-text-dark);
+}
+
+.relatedViewAll {
+    flex-shrink: 0;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-primary-hover);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--transition-fast);
+}
+
+.relatedViewAll:hover {
+    border-bottom-color: var(--color-primary-hover);
+}
+
+.relatedGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.relatedCard {
+    display: block;
+    text-decoration: none;
+}
+
+.relatedImage {
+    position: relative;
+    display: block;
+    height: 180px;
+    overflow: hidden;
+    background-color: var(--color-background);
+}
+
+.relatedImg {
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+}
+
+.relatedCard:hover .relatedImg {
+    transform: scale(1.03);
+}
+
+.relatedCardTitle {
+    margin: 14px 0 0;
+    font-family: var(--font-display);
+    font-size: 21px;
+    font-weight: 400;
+    line-height: 1.3;
+    color: var(--color-text-dark);
+    transition: color var(--transition-fast);
+}
+
+.relatedCard:hover .relatedCardTitle {
+    color: var(--color-primary-hover);
+}
+
+/* Responsive */
 @media (max-width: 1024px) {
     .hero {
-        min-height: 480px;
+        height: 440px;
     }
 
-    .title {
-        font-size: 36px;
+    .heroTitle {
+        font-size: 48px;
     }
 
-    .gallery {
+    .heroExcerpt {
+        font-size: 17px;
+    }
+
+    /* The contents list stops being an aside and leads the article instead. */
+    .body {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        justify-content: stretch;
+    }
+
+    /* One column is no reason to let the line length run past the measure. */
+    .body .main {
+        max-width: 760px;
+    }
+
+    .relatedGrid {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media (max-width: 768px) {
-    .container {
-        padding: 0 16px;
-    }
-
     .hero {
-        min-height: 440px;
+        height: 380px;
     }
 
     .heroContent {
-        padding: 64px 0 44px;
+        padding: 0 var(--page-gutter) 36px;
     }
 
-    .title {
-        font-size: 30px;
+    .heroTitle {
+        font-size: 40px;
     }
 
-    .excerpt {
+    .heroExcerpt {
+        margin-top: 14px;
         font-size: 16px;
     }
 
-    .body {
-        padding: 44px 0 70px;
+    .body,
+    .bodyNoToc {
+        padding: 48px var(--page-gutter) 56px;
+    }
+
+    .related {
+        padding: 48px var(--page-gutter);
+    }
+
+    .relatedTitle {
+        font-size: 26px;
     }
 }
 
 @media (max-width: 480px) {
     .hero {
-        min-height: 420px;
+        height: 340px;
     }
 
-    .title {
-        font-size: 26px;
+    .heroTitle {
+        font-size: 32px;
     }
 
     .gallery {
         grid-template-columns: 1fr;
     }
-}
 
+    .relatedGrid {
+        grid-template-columns: 1fr;
+        gap: 28px;
+    }
+}

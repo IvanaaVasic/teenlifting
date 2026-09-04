@@ -412,13 +412,29 @@ export const portableTextComponents: PortableTextComponents = {
     block: {
         // The id lets the sticky "Na ovoj strani" list scroll here; it is
         // derived from the heading text by the same helper the list uses.
+        // A blog post keeps Sanity's default block styles, so its section
+        // headings arrive as h1 where a page section would use h2. Rendered as
+        // an h2 - the page already has its own h1 - one step larger.
+        h1: ({ children, value }) => (
+            <h2 id={blockAnchorId(value)} className={styles.heading1}>
+                {children}
+            </h2>
+        ),
         h2: ({ children, value }) => (
             <h2 id={blockAnchorId(value)} className={styles.heading2}>
                 {children}
             </h2>
         ),
-        h3: ({ children }) => <h3 className={styles.heading3}>{children}</h3>,
-        h4: ({ children }) => <h4 className={styles.heading4}>{children}</h4>,
+        h3: ({ children, value }) => (
+            <h3 id={blockAnchorId(value)} className={styles.heading3}>
+                {children}
+            </h3>
+        ),
+        h4: ({ children, value }) => (
+            <h4 id={blockAnchorId(value)} className={styles.heading4}>
+                {children}
+            </h4>
+        ),
         blockquote: ({ children }) => (
             <blockquote className={styles.blockquote}>{children}</blockquote>
         ),

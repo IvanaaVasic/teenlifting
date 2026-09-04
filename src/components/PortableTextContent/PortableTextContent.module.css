@@ -28,6 +28,21 @@
     text-wrap: pretty;
 }
 
+/*
+ * Only a blog post reaches this style - `contentSection.content` restricts its
+ * editor to h2/h3/h4. It sits one step above `.heading2` so a post that mixes
+ * h1 and h3 still reads as two levels.
+ */
+.heading1 {
+    margin: 52px 0 18px;
+    font-family: var(--font-display);
+    font-size: 40px;
+    font-weight: 300;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    color: var(--color-text-dark);
+}
+
 .heading2 {
     margin: 48px 0 18px;
     font-family: var(--font-display);
@@ -643,6 +658,11 @@
         gap: 24px;
     }
 
+    .heading1 {
+        font-size: 34px;
+        margin-top: 44px;
+    }
+
     .heading2 {
         font-size: 30px;
         margin-top: 40px;
@@ -681,6 +701,10 @@
         font-size: 16px;
     }
 
+    .heading1 {
+        font-size: 30px;
+    }
+
     .heading2 {
         font-size: 26px;
     }
@@ -716,6 +740,10 @@
 }
 
 @media (max-width: 480px) {
+    .heading1 {
+        font-size: 27px;
+    }
+
     .heading2 {
         font-size: 24px;
     }

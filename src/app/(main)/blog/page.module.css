@@ -1,121 +1,109 @@
-.pageWrapper {
-    position: relative;
+/* ============================================
+   Page header - a text band, no image
+   Same band as the price list; the copy comes from `hero.slides[0]`.
+   ============================================ */
+.pageHeader {
+    padding: 56px var(--page-gutter) 40px;
+    border-bottom: 1px solid var(--color-border);
 }
 
-.heroWrapper {
-    position: sticky;
-    top: 0;
-    z-index: 1;
-    height: 650px;
+.eyebrow {
+    margin: 0;
+    font-size: 11px;
+    line-height: normal;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-text-light);
 }
 
-.simpleHeader {
-    padding: 80px 0 32px;
-    background-color: var(--color-background);
-}
-
-.container {
-    max-width: var(--content-max-width);
-    margin: 0 auto;
-    padding: 0 24px;
-}
-
-.h1 {
-    margin: 0 0 12px;
-    font-size: 44px;
-    font-weight: 800;
+.title {
+    margin: 16px 0 0;
+    font-family: var(--font-display);
+    font-size: 60px;
+    font-weight: 300;
+    line-height: 1.04;
+    letter-spacing: -0.02em;
     color: var(--color-text-dark);
-    line-height: 1.1;
+}
+
+/* Without an eyebrow above it the band's own padding is the whole gap. */
+.title:first-child {
+    margin-top: 0;
+}
+
+.titleItalic {
+    font-style: italic;
 }
 
 .lead {
-    margin: 0;
-    font-size: 18px;
+    margin: 18px 0 0;
+    max-width: 640px;
+    font-size: 17px;
     line-height: 1.7;
-    color: var(--color-text);
-    max-width: 720px;
+    color: var(--color-text-secondary);
+    text-wrap: pretty;
 }
 
-.main,
-.mainNoHero {
-    position: relative;
-    z-index: 2;
-    background-color: var(--color-background);
-    padding: 60px 0 90px;
-}
-
-.main {
-    border-radius: 24px 24px 0 0;
-    margin-top: -40px;
-    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
+/* ============================================
+   Listing
+   ---
+   The newest post gets a band of its own above the grid. Both are full width
+   bands so the rules run edge to edge, which is why the gutter sits in their
+   padding rather than on an inner wrapper.
+   ============================================ */
+.featured {
+    padding: 56px var(--page-gutter);
+    border-bottom: 1px solid var(--color-border);
 }
 
 .grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
+    gap: 28px;
+    padding: 56px var(--page-gutter) 80px;
 }
 
+/* Responsive */
 @media (max-width: 1024px) {
-    .heroWrapper {
-        height: 500px;
-    }
-
-    .main {
-        border-radius: 20px 20px 0 0;
-        margin-top: -32px;
+    .title {
+        font-size: 48px;
     }
 
     .grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
-    }
-
-    .h1 {
-        font-size: 36px;
+        gap: 24px;
     }
 }
 
 @media (max-width: 768px) {
-    .heroWrapper {
-        height: 500px;
+    .pageHeader {
+        padding: 40px var(--page-gutter) 32px;
     }
 
-    .container {
-        padding: 0 16px;
-    }
-
-    .main {
-        border-radius: 16px 16px 0 0;
-        margin-top: -24px;
-        padding: 48px 0 70px;
-    }
-
-    .simpleHeader {
-        padding: 64px 0 24px;
-    }
-
-    .grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 16px;
-    }
-
-    .h1 {
-        font-size: 30px;
+    .title {
+        font-size: 40px;
     }
 
     .lead {
         font-size: 16px;
     }
+
+    .featured {
+        padding: 40px var(--page-gutter);
+    }
+
+    .grid {
+        padding: 40px var(--page-gutter) 56px;
+    }
 }
 
 @media (max-width: 480px) {
-    .heroWrapper {
-        height: 450px;
+    .title {
+        font-size: 32px;
     }
 
     .grid {
         grid-template-columns: 1fr;
+        gap: 32px;
     }
 }
-

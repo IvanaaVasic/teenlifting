@@ -112,6 +112,106 @@
     color: #6e6763;
 }
 
+.meta {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.readMore {
+    align-self: flex-start;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-primary-hover);
+    text-decoration: none;
+    padding-bottom: 3px;
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--transition-fast);
+}
+
+.readMore:hover {
+    border-bottom-color: var(--color-primary-hover);
+}
+
+/* ============================================
+   List variant - the blog listing grid
+   ---
+   The same card one step larger than the home page teaser, with the read-more
+   link the listing shows and the teaser does not.
+   ============================================ */
+.cardList .imageWrapper {
+    height: 240px;
+}
+
+.cardList .cardTitle {
+    font-size: 25px;
+}
+
+/* One notch looser than the home page teaser, which runs at 1.65. */
+.cardList .excerpt {
+    line-height: 1.7;
+}
+
+/* The 10px row gap covers part of the 16px above the link; this is the rest. */
+.cardList .readMore {
+    margin-top: 6px;
+}
+
+/* ============================================
+   Featured variant - newest post above the listing grid
+   ============================================ */
+.cardFeatured {
+    display: grid;
+    grid-template-columns: 620px 1fr;
+    gap: 48px;
+    align-items: center;
+}
+
+.cardFeatured .imageWrapper {
+    height: 340px;
+    margin-bottom: 0;
+}
+
+/* The steps here are uneven (18 / 16 / 22), so they are set one by one. */
+.cardFeatured .cardContent {
+    gap: 0;
+}
+
+.cardFeatured .badge {
+    padding: 5px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.3;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    background-color: var(--color-primary);
+    color: #fff;
+}
+
+.cardFeatured .cardTitle {
+    margin-top: 18px;
+    font-size: 42px;
+    font-weight: 300;
+    line-height: 1.1;
+    /* A section heading, not a page title - it carries no tightening. */
+    letter-spacing: normal;
+}
+
+.cardFeatured .excerpt {
+    margin-top: 16px;
+    max-width: 520px;
+    font-size: 16px;
+    line-height: 1.75;
+    color: var(--color-text-secondary);
+}
+
+.cardFeatured .readMore {
+    margin-top: 22px;
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
     .grid {
@@ -130,6 +230,19 @@
 
     .title {
         font-size: 36px;
+    }
+
+    .cardFeatured {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+
+    .cardFeatured .imageWrapper {
+        height: 300px;
+    }
+
+    .cardFeatured .cardTitle {
+        font-size: 34px;
     }
 }
 
@@ -151,6 +264,18 @@
     .cardTitle {
         font-size: 22px;
     }
+
+    .cardList .cardTitle {
+        font-size: 22px;
+    }
+
+    .cardFeatured .cardTitle {
+        font-size: 28px;
+    }
+
+    .cardFeatured .imageWrapper {
+        height: 240px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -163,6 +288,18 @@
     }
 
     .imageWrapper {
+        height: 200px;
+    }
+
+    .cardList .imageWrapper {
+        height: 200px;
+    }
+
+    .cardFeatured .cardTitle {
+        font-size: 24px;
+    }
+
+    .cardFeatured .imageWrapper {
         height: 200px;
     }
 }

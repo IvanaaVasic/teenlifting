@@ -8,11 +8,17 @@ import styles from "./PageToc.module.css";
 
 type PageTocProps = {
     entries: TocEntry[];
+    /** Heading above the list - the blog article calls the same list "Sadržaj". */
+    label?: string;
     /** Optional button under the list - skipped when the CMS leaves it empty. */
     cta?: { label?: string; href?: string };
 };
 
-export function PageToc({ entries, cta }: PageTocProps) {
+export function PageToc({
+    entries,
+    label = "Na ovoj strani",
+    cta,
+}: PageTocProps) {
     const [activeId, setActiveId] = useState<string>("");
     const visible = useRef<Set<string>>(new Set());
 
@@ -56,7 +62,7 @@ export function PageToc({ entries, cta }: PageTocProps) {
         <aside className={styles.toc}>
             {entries.length > 0 && (
                 <>
-                    <span className={styles.label}>Na ovoj strani</span>
+                    <span className={styles.label}>{label}</span>
                     <nav className={styles.list}>
                         {entries.map((entry) => (
                             <a
