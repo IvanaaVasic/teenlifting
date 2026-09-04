@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { Metadata } from "next";
 import {
     HiOutlineLocationMarker,
@@ -6,21 +8,37 @@ import {
     HiOutlineClock,
 } from "react-icons/hi";
 import { FaFacebookF, FaInstagram, FaTiktok, FaYoutube } from "react-icons/fa";
-import { Hero, ContactForm } from "@/components";
-import { getContactPage, getSiteSettings } from "@/sanity/sanity-utils";
+import { ContactForm } from "@/components";
+import {
+    getContactPage,
+    getSiteSettings,
+    type ContactPage as ContactPageType,
+    type SiteSettings,
+} from "@/sanity/sanity-utils";
 import styles from "./page.module.css";
 
-export const dynamic = "force-dynamic";
-
 export async function generateMetadata(): Promise<Metadata> {
-    const contactPage = await getContactPage();
-    const settings = await getSiteSettings();
+    const [contactPage, settings] = await Promise.all([
+        getContactPage(),
+        getSiteSettings(),
+    ]);
+
+    const title = `${contactPage?.title || "Kontakt"} | ${
+        settings?.siteTitle || "Teenlifting"
+    }`;
 
     return {
-        title: contactPage?.title || "Kontakt" + " | " + settings?.siteTitle,
+        title,
         description:
             contactPage?.intro ||
             "Kontaktirajte nas za sve informacije o tretmanima.",
+        openGraph: {
+            title,
+            description:
+                contactPage?.intro ||
+                "Kontaktirajte nas za sve informacije o tretmanima.",
+            locale: "sr_RS",
+        },
     };
 }
 
@@ -34,244 +52,185 @@ const socialIcons: Record<
     youtube: FaYoutube,
 };
 
+/**
+ * One row of the contact list. The label is a field name rather than editorial
+ * copy - the same class as the form's own labels - so it stays in code while
+ * the value comes from `settings.footer`.
+ */
+function InfoRow({
+    icon,
+    label,
+    children,
+}: {
+    icon: React.ReactNode;
+    label: string;
+    children: React.ReactNode;
+}) {
+    return (
+        <div className={styles.infoRow}>
+            <span className={styles.infoIcon} aria-hidden="true">
+                {icon}
+            </span>
+            <div>
+                <h3 className={styles.infoLabel}>{label}</h3>
+                {children}
+            </div>
+        </div>
+    );
+}
+
 export default async function ContactPage() {
     const [contactPage, settings] = await Promise.all([
         getContactPage(),
         getSiteSettings(),
     ]);
 
-    const hasHero = contactPage?.hero?.slides?.length;
+    const footer: SiteSettings["footer"] | undefined = settings?.footer;
+    const workingHours = footer?.workingHours || [];
+    const socials = settings?.socials || [];
 
-    return (
-        <div className={styles.pageWrapper}>
-            {hasHero ? (
-                <>
-                    <div className={styles.heroWrapper}>
-                        <Hero hero={contactPage.hero} />
-                    </div>
-                    <main className={styles.main}>
-                        <ContactPageContent
-                            contactPage={contactPage}
-                            settings={settings}
-                        />
-                    </main>
-                </>
-            ) : (
-                <main className={styles.mainNoHero}>
-                    <ContactPageContent
-                        contactPage={contactPage}
-                        settings={settings}
-                    />
-                </main>
-            )}
-        </div>
-    );
-}
+    const page: ContactPageType | null = contactPage;
 
-interface ContactPageContentProps {
-    contactPage: Awaited<ReturnType<typeof getContactPage>>;
-    settings: Awaited<ReturnType<typeof getSiteSettings>>;
-}
-
-function ContactPageContent({
-    contactPage,
-    settings,
-}: ContactPageContentProps) {
     return (
         <>
-            {/* Header Section */}
-            <section className={styles.headerSection}>
-                <div className={styles.container}>
-                    <h1 className={styles.pageTitle}>
-                        {contactPage?.title || "Kontaktirajte nas"}
-                    </h1>
-                    {contactPage?.intro && (
-                        <p className={styles.intro}>{contactPage.intro}</p>
+            <div className={styles.pageHeader}>
+                {page?.eyebrow && (
+                    <p className={styles.eyebrow}>{page.eyebrow}</p>
+                )}
+
+                {page?.title && <h1 className={styles.title}>{page.title}</h1>}
+
+                {page?.intro && <p className={styles.lead}>{page.intro}</p>}
+            </div>
+
+            <div className={styles.body}>
+                <div className={styles.info}>
+                    {page?.infoTitle && (
+                        <h2 className={styles.columnLabel}>{page.infoTitle}</h2>
+                    )}
+
+                    <div className={styles.infoList}>
+                        {footer?.address && (
+                            <InfoRow
+                                icon={<HiOutlineLocationMarker size={20} />}
+                                label="Adresa"
+                            >
+                                <p className={styles.infoValue}>
+                                    {footer.address}
+                                </p>
+                            </InfoRow>
+                        )}
+
+                        {footer?.phone && (
+                            <InfoRow
+                                icon={<HiOutlinePhone size={20} />}
+                                label="Telefon"
+                            >
+                                <a
+                                    href={`tel:${footer.phone.replace(/\s/g, "")}`}
+                                    className={styles.infoLink}
+                                >
+                                    {footer.phone}
+                                </a>
+                            </InfoRow>
+                        )}
+
+                        {footer?.email && (
+                            <InfoRow
+                                icon={<HiOutlineMail size={20} />}
+                                label="Email"
+                            >
+                                <a
+                                    href={`mailto:${footer.email}`}
+                                    className={styles.infoLink}
+                                >
+                                    {footer.email}
+                                </a>
+                            </InfoRow>
+                        )}
+
+                        {workingHours.length > 0 && (
+                            <InfoRow
+                                icon={<HiOutlineClock size={20} />}
+                                label="Radno vreme"
+                            >
+                                <p
+                                    className={`${styles.infoValue} ${styles.infoValueLines}`}
+                                >
+                                    {workingHours.map((wh, index) => (
+                                        <span key={wh._key}>
+                                            {wh.days}: {wh.hours}
+                                            {index < workingHours.length - 1 && (
+                                                <br />
+                                            )}
+                                        </span>
+                                    ))}
+                                </p>
+                            </InfoRow>
+                        )}
+                    </div>
+
+                    {socials.length > 0 && (
+                        <div className={styles.socials}>
+                            {page?.socialsTitle && (
+                                <h3 className={styles.columnLabel}>
+                                    {page.socialsTitle}
+                                </h3>
+                            )}
+                            <div className={styles.socialsList}>
+                                {socials.map((social) => {
+                                    const Icon =
+                                        socialIcons[
+                                            social.label.toLowerCase()
+                                        ] || null;
+                                    if (!Icon) return null;
+                                    return (
+                                        <a
+                                            key={social._key}
+                                            href={social.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className={styles.socialLink}
+                                            aria-label={social.label}
+                                        >
+                                            <Icon size={18} />
+                                        </a>
+                                    );
+                                })}
+                            </div>
+                        </div>
                     )}
                 </div>
-            </section>
 
-            {/* Contact Grid */}
-            <section className={styles.contentSection}>
-                <div className={styles.container}>
-                    <div className={styles.contactGrid}>
-                        {/* Contact Info */}
-                        <div className={styles.infoColumn}>
-                            <h2 className={styles.columnTitle}>
-                                Kontakt informacije
-                            </h2>
-
-                            <div className={styles.infoCards}>
-                                {settings?.footer?.address && (
-                                    <div className={styles.infoCard}>
-                                        <div className={styles.infoIconWrapper}>
-                                            <HiOutlineLocationMarker
-                                                size={24}
-                                            />
-                                        </div>
-                                        <div className={styles.infoContent}>
-                                            <h3 className={styles.infoLabel}>
-                                                Adresa
-                                            </h3>
-                                            <p className={styles.infoValue}>
-                                                {settings.footer.address}
-                                            </p>
-                                        </div>
-                                    </div>
-                                )}
-
-                                {settings?.footer?.phone && (
-                                    <div className={styles.infoCard}>
-                                        <div className={styles.infoIconWrapper}>
-                                            <HiOutlinePhone size={24} />
-                                        </div>
-                                        <div className={styles.infoContent}>
-                                            <h3 className={styles.infoLabel}>
-                                                Telefon
-                                            </h3>
-                                            <a
-                                                href={`tel:${settings.footer.phone.replace(/\s/g, "")}`}
-                                                className={styles.infoLink}
-                                            >
-                                                {settings.footer.phone}
-                                            </a>
-                                        </div>
-                                    </div>
-                                )}
-
-                                {settings?.footer?.email && (
-                                    <div className={styles.infoCard}>
-                                        <div className={styles.infoIconWrapper}>
-                                            <HiOutlineMail size={24} />
-                                        </div>
-                                        <div className={styles.infoContent}>
-                                            <h3 className={styles.infoLabel}>
-                                                Email
-                                            </h3>
-                                            <a
-                                                href={`mailto:${settings.footer.email}`}
-                                                className={styles.infoLink}
-                                            >
-                                                {settings.footer.email}
-                                            </a>
-                                        </div>
-                                    </div>
-                                )}
-
-                                {settings?.footer?.workingHours &&
-                                    settings.footer.workingHours.length > 0 && (
-                                        <div className={styles.infoCard}>
-                                            <div
-                                                className={
-                                                    styles.infoIconWrapper
-                                                }
-                                            >
-                                                <HiOutlineClock size={24} />
-                                            </div>
-                                            <div className={styles.infoContent}>
-                                                <h3 className={styles.infoLabel}>
-                                                    Radno vreme
-                                                </h3>
-                                                <p className={styles.infoValue}>
-                                                    {settings.footer.workingHours.map(
-                                                        (wh, index) => (
-                                                            <span key={wh._key}>
-                                                                {wh.days}:{" "}
-                                                                {wh.hours}
-                                                                {index <
-                                                                    settings
-                                                                        .footer
-                                                                        .workingHours!
-                                                                        .length -
-                                                                        1 && (
-                                                                    <br />
-                                                                )}
-                                                            </span>
-                                                        )
-                                                    )}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    )}
-                            </div>
-
-                            {/* Social Links */}
-                            {settings?.socials &&
-                                settings.socials.length > 0 && (
-                                    <div className={styles.socialsSection}>
-                                        <h3 className={styles.socialsTitle}>
-                                            Pratite nas
-                                        </h3>
-                                        <div className={styles.socials}>
-                                            {settings.socials.map((social) => {
-                                                const Icon =
-                                                    socialIcons[
-                                                        social.label.toLowerCase()
-                                                    ] || null;
-                                                return (
-                                                    <a
-                                                        key={social._key}
-                                                        href={social.url}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className={
-                                                            styles.socialLink
-                                                        }
-                                                        aria-label={
-                                                            social.label
-                                                        }
-                                                    >
-                                                        {Icon && (
-                                                            <Icon size={20} />
-                                                        )}
-                                                    </a>
-                                                );
-                                            })}
-                                        </div>
-                                    </div>
-                                )}
-                        </div>
-
-                        {/* Contact Form */}
-                        <div className={styles.formColumn}>
-                            <div className={styles.formCard}>
-                                <h2 className={styles.formTitle}>
-                                    {contactPage?.formTitle ||
-                                        "Pošaljite nam poruku"}
-                                </h2>
-                                {contactPage?.formDescription && (
-                                    <p className={styles.formDescription}>
-                                        {contactPage.formDescription}
-                                    </p>
-                                )}
-                                <ContactForm
-                                    successMessage={contactPage?.successMessage}
-                                />
-                            </div>
-                        </div>
+                <div className={styles.formPanel}>
+                    {page?.formTitle && (
+                        <h2 className={styles.formTitle}>{page.formTitle}</h2>
+                    )}
+                    {page?.formDescription && (
+                        <p className={styles.formDescription}>
+                            {page.formDescription}
+                        </p>
+                    )}
+                    <div className={styles.formBody}>
+                        <ContactForm successMessage={page?.successMessage} />
                     </div>
                 </div>
-            </section>
+            </div>
 
-            {/* Google Map */}
-            {contactPage?.googleMapsEmbed && (
-                <section className={styles.mapSection}>
-                    <div className={styles.container}>
-                        {contactPage.mapTitle && (
-                            <h2 className={styles.mapTitle}>
-                                {contactPage.mapTitle}
-                            </h2>
-                        )}
-                        <div className={styles.mapWrapper}>
-                            <iframe
-                                src={contactPage.googleMapsEmbed}
-                                className={styles.map}
-                                allowFullScreen
-                                loading="lazy"
-                                referrerPolicy="no-referrer-when-downgrade"
-                                title="Lokacija na mapi"
-                            />
-                        </div>
+            {page?.googleMapsEmbed && (
+                <section className={styles.map}>
+                    {page.mapTitle && (
+                        <h2 className={styles.mapTitle}>{page.mapTitle}</h2>
+                    )}
+                    <div className={styles.mapFrame}>
+                        <iframe
+                            src={page.googleMapsEmbed}
+                            className={styles.mapEmbed}
+                            allowFullScreen
+                            loading="lazy"
+                            referrerPolicy="no-referrer-when-downgrade"
+                            title="Lokacija na mapi"
+                        />
                     </div>
                 </section>
             )}

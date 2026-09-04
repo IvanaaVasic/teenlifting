@@ -13,6 +13,14 @@ const contactPage = {
     fields: [
         { name: "hero", type: "hero", group: "content" },
         {
+            name: "eyebrow",
+            title: "Oznaka iznad naslova",
+            type: "string",
+            group: "content",
+            description:
+                "Sitan tekst verzalom iznad naslova. Npr. „Kontakt”. Prazno - ne prikazuje se.",
+        },
+        {
             name: "title",
             title: "Page Title",
             type: "string",
@@ -26,6 +34,22 @@ const contactPage = {
             rows: 3,
             group: "content",
             description: "Kratak uvodni tekst ispod naslova",
+        },
+        {
+            name: "infoTitle",
+            title: "Naslov kolone sa podacima",
+            type: "string",
+            group: "content",
+            description:
+                "Npr. „Kontakt informacije”. Prazno - naslov se ne prikazuje.",
+        },
+        {
+            name: "socialsTitle",
+            title: "Naslov iznad društvenih mreža",
+            type: "string",
+            group: "content",
+            description:
+                "Npr. „Pratite nas”. Prazno - naslov se ne prikazuje, kvadrati sa mrežama ostaju.",
         },
 
         // Contact Form Settings

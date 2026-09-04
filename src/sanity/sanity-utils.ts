@@ -250,8 +250,11 @@ export type AboutPage = {
 
 export type ContactPage = {
     hero?: Hero;
+    eyebrow?: string;
     title?: string;
     intro?: string;
+    infoTitle?: string;
+    socialsTitle?: string;
     formTitle?: string;
     formDescription?: string;
     recipientEmail?: string;
@@ -530,8 +533,11 @@ export async function getContactPage(): Promise<ContactPage | null> {
     return client.fetch(
         groq`*[_type == "contactPage"][0] {
             ${heroFragment},
+            eyebrow,
             title,
             intro,
+            infoTitle,
+            socialsTitle,
             formTitle,
             formDescription,
             recipientEmail,
